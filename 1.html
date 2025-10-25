@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Калькулятор стоимости доставки</title>
+  <title>Бетонный завод "Монолит"</title>
+  <meta name="description" content="Производство и поставка бетона, ФБС, полусфер, бетононасосов. Доставка по всей России. Удобный калькулятор стоимости.">
+  <meta name="keywords" content="бетон, фбс, бетононасосы, полусферы, доставка бетона, цена на бетон, расчет стоимости">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -13,15 +15,98 @@
       background-color: #f9f9f9;
     }
 
+    header {
+      background: linear-gradient(135deg, #3498db, #2c3e50);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .call-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #fff;
+      color: #2c3e50;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .call-button:hover {
+      background-color: #eee;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      color: #f1f1f1;
+    }
+
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: auto;
       padding: 20px;
     }
 
-    h2 {
-      color: #2c3e50;
-      margin-bottom: 10px;
+    section {
+      margin-bottom: 40px;
+    }
+
+    .block {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .service-item {
+      background-color: #ecf0f1;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .service-item h4 {
+      margin: 0 0 10px;
+    }
+
+    .calculator-block {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .map-and-calculator {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .calculator {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .map-container {
+      flex: 1;
+      min-width: 300px;
     }
 
     label {
@@ -45,6 +130,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -53,7 +139,6 @@
 
     #map {
       height: 400px;
-      margin-top: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
@@ -65,38 +150,358 @@
       border-left: 5px solid #3498db;
       border-radius: 6px;
     }
+
+    .reviews {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .review {
+      background-color: #ecf0f1;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .review h4 {
+      margin: 0;
+    }
+
+    .review p {
+      margin: 5px 0 0;
+      color: #555;
+    }
+
+    .contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .contacts a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #eee;
+      margin-top: 40px;
+    }
+
+    /* Стили для прайса */
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+
+    .price-table th,
+    .price-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .price-table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    .price-table tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .price-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    .pdf-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .pdf-button:hover {
+      background-color: #2980b9;
+    }
   </style>
-  <!-- Яндекс.Карты API с полным пакетом -->
-  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9&load=package.full"></script>
+  <!-- Яндекс.Карты API -->
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
 </head>
 <body>
 
+<header>
+  <button class="call-button" onclick="window.location.href='tel:+79991234567'">Позвонить +7 (999) 123-45-67</button>
+  <h1>Бетонный завод "Монолит"</h1>
+  <p>Производство и поставка качественного бетона и строительных материалов</p>
+</header>
+
 <div class="container">
-  <h2>Калькулятор стоимости доставки</h2>
 
-  <label for="mark">Выберите марку:</label>
-  <select id="mark">
-    <option value="2800">М100 - 2 800 ₽/м³</option>
-    <option value="3200">М150 - 3 200 ₽/м³</option>
-    <option value="3500">М200 - 3 500 ₽/м³</option>
-    <option value="4000">М250 - 4 000 ₽/м³</option>
-    <option value="4500">М300 - 4 500 ₽/м³</option>
-    <option value="5000">М350 - 5 000 ₽/м³</option>
-    <option value="5500">М400 - 5 500 ₽/м³</option>
-    <option value="6000">М450 - 6 000 ₽/м³</option>
-    <option value="6500">М500 - 6 500 ₽/м³</option>
-  </select>
+  <section class="block">
+    <h2>О нас</h2>
+    <p>Мы — надежный производитель бетона и строительных материалов в регионе. С 2010 года обеспечиваем строительные компании и частных заказчиков высококачественными материалами.</p>
+    <p>Наши услуги включают: поставку бетона, готовые изделия из бетона, аренду техники и доставку.</p>
+  </section>
 
-  <label for="volume">Объем (м³):</label>
-  <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
+  <section class="block">
+    <h2>Наши услуги</h2>
+    <div class="services-grid">
+      <div class="service-item">
+        <h4>Бетон М100 - М500</h4>
+        <p>Различные марки бетона по выгодной цене. Доставка в любое время суток.</p>
+      </div>
+      <div class="service-item">
+        <h4>ФБС блоки</h4>
+        <p>Фундаментные блоки для ленточных фундаментов. Высокая прочность и точные размеры.</p>
+      </div>
+      <div class="service-item">
+        <h4>Полусферы</h4>
+        <p>Изделия из бетона для оформления входных групп, фонтанов, памятников.</p>
+      </div>
+      <div class="service-item">
+        <h4>Бетононасосы</h4>
+        <p>Аренда бетононасосов. Быстрая и удобная подача бетона на высоту и в труднодоступные места.</p>
+      </div>
+      <div class="service-item">
+        <h4>Доставка</h4>
+        <p>Собственный автопарк. Доставка бетона до объекта в любом объеме.</p>
+      </div>
+      <div class="service-item">
+        <h4>Ремонт и отделка</h4>
+        <p>Предлагаем комплексные решения под ключ. От проекта до финишной отделки.</p>
+      </div>
+    </div>
+  </section>
 
-  <button onclick="calculate()">Рассчитать стоимость</button>
+  <section class="block calculator-block">
+    <h2>Калькулятор стоимости и карта</h2>
+    <div class="map-and-calculator">
+      <div class="calculator">
+        <label for="mark">Выберите марку:</label>
+        <select id="mark">
+          <option value="2800">М100 - 2 800 ₽/м³</option>
+          <option value="3200">М150 - 3 200 ₽/м³</option>
+          <option value="3500">М200 - 3 500 ₽/м³</option>
+          <option value="4000">М250 - 4 000 ₽/м³</option>
+          <option value="4500">М300 - 4 500 ₽/м³</option>
+          <option value="5000">М350 - 5 000 ₽/м³</option>
+          <option value="5500">М400 - 5 500 ₽/м³</option>
+          <option value="6000">М450 - 6 000 ₽/м³</option>
+          <option value="6500">М500 - 6 500 ₽/м³</option>
+        </select>
 
-  <div class="result" id="result"></div>
+        <label for="volume">Объем (м³):</label>
+        <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
 
-  <!-- Карта -->
-  <div id="map"></div>
+        <button onclick="calculate()">Рассчитать стоимость</button>
+
+        <div class="result" id="result"></div>
+      </div>
+      <div class="map-container">
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Прайс-лист</h2>
+    <button id="download-pdf" class="pdf-button">Скачать прайс в PDF</button>
+
+    <table id="price-table" class="price-table">
+      <thead>
+        <tr>
+          <th>Наименование</th>
+          <th>Марка</th>
+          <th>Класс бетона (B)</th>
+          <th>Цена</th>
+          <th>Описание / Назначение</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Бетон -->
+        <tr><td colspan="5"><strong>Бетон</strong></td></tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М100</td>
+          <td>B7.5</td>
+          <td>2 800 ₽/м³</td>
+          <td>Низкая прочность, подходит для подготовительных работ</td>
+        </tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М150</td>
+          <td>B10</td>
+          <td>3 200 ₽/м³</td>
+          <td>Подходит для устройства оснований, дорожных покрытий</td>
+        </tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М200</td>
+          <td>B15</td>
+          <td>3 500 ₽/м³</td>
+          <td>Общестроительный бетон, подходит для фундаментов, стен</td>
+        </tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М250</td>
+          <td>B20</td>
+          <td>4 000 ₽/м³</td>
+          <td>Подходит для перекрытий, плит, колонн</td>
+        </tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М300</td>
+          <td>B25</td>
+          <td>4 500 ₽/м³</td>
+          <td>Для ответственных конструкций, например, монолитных перекрытий</td>
+        </tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М350</td>
+          <td>B27.5</td>
+          <td>5 000 ₽/м³</td>
+          <td>Подходит для железобетонных конструкций высокой прочности</td>
+        </tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М400</td>
+          <td>B30</td>
+          <td>5 500 ₽/м³</td>
+          <td>Используется для мостов, подземных сооружений</td>
+        </tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М450</td>
+          <td>B35</td>
+          <td>6 000 ₽/м³</td>
+          <td>Высокопрочный бетон для специальных конструкций</td>
+        </tr>
+        <tr>
+          <td>Бетон</td>
+          <td>М500</td>
+          <td>B40</td>
+          <td>6 500 ₽/м³</td>
+          <td>Наиболее прочный бетон, используется в гидротехническом строительстве</td>
+        </tr>
+
+        <!-- ФБС блоки -->
+        <tr><td colspan="5"><strong>ФБС блоки</strong></td></tr>
+        <tr>
+          <td>ФБС блок</td>
+          <td>24.4.6</td>
+          <td>—</td>
+          <td>3 500 ₽/шт</td>
+          <td>Применяются для устройства ленточных фундаментов</td>
+        </tr>
+        <tr>
+          <td>ФБС блок</td>
+          <td>24.5.6</td>
+          <td>—</td>
+          <td>3 700 ₽/шт</td>
+          <td>Подходят для тяжёлых нагрузок и грунтов</td>
+        </tr>
+        <tr>
+          <td>ФБС блок</td>
+          <td>24.6.6</td>
+          <td>—</td>
+          <td>3 900 ₽/шт</td>
+          <td>Для фундаментов под здания и сооружения</td>
+        </tr>
+
+        <!-- Полусферы -->
+        <tr><td colspan="5"><strong>Полусферы</strong></td></tr>
+        <tr>
+          <td>Полусфера</td>
+          <td>60 см</td>
+          <td>—</td>
+          <td>2 200 ₽/шт</td>
+          <td>Для малых архитектурных форм, украшений</td>
+        </tr>
+        <tr>
+          <td>Полусфера</td>
+          <td>80 см</td>
+          <td>—</td>
+          <td>3 000 ₽/шт</td>
+          <td>Подходят для оформления входов, фонтанов</td>
+        </tr>
+        <tr>
+          <td>Полусфера</td>
+          <td>1 м</td>
+          <td>—</td>
+          <td>4 000 ₽/шт</td>
+          <td>Для больших объектов и архитектурных решений</td>
+        </tr>
+
+        <!-- Раствор -->
+        <tr><td colspan="5"><strong>Раствор</strong></td></tr>
+        <tr>
+          <td>Цементный раствор</td>
+          <td>М150</td>
+          <td>B10</td>
+          <td>1 800 ₽/м³</td>
+          <td>Подходит для кладки кирпича, штукатурки</td>
+        </tr>
+        <tr>
+          <td>Цементный раствор</td>
+          <td>М200</td>
+          <td>B15</td>
+          <td>2 100 ₽/м³</td>
+          <td>Для укладки плит, камней, бетонных блоков</td>
+        </tr>
+        <tr>
+          <td>Цементный раствор</td>
+          <td>М300</td>
+          <td>B20</td>
+          <td>2 400 ₽/м³</td>
+          <td>Для высоконагруженных конструкций</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="block">
+    <h2>Отзывы клиентов</h2>
+    <div class="reviews">
+      <div class="review">
+        <h4>Иван Иванов</h4>
+        <p>Хороший завод, быстрая доставка. Всё пришло в срок, качество отличное!</p>
+      </div>
+      <div class="review">
+        <h4>Елена Петрова</h4>
+        <p>Работали с ними на новом объекте. Цены честные, персонал профессиональный.</p>
+      </div>
+      <div class="review">
+        <h4>Алексей Смирнов</h4>
+        <p>Все понравилось, особенно оперативность и внимание к деталям.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Контакты</h2>
+    <div class="contacts">
+      <p><strong>Телефон:</strong> +7 (999) 123-45-67</p>
+      <p><strong>Email:</strong> <a href="mailto:info@monolitbeton.ru">info@monolitbeton.ru</a></p>
+      <p><strong>Адрес:</strong> г. Батайск, ул. Промышленная, д. 45</p>
+      <p><strong>Режим работы:</strong> Пн–Пт: 8:00–18:00, Сб: 9:00–15:00</p>
+    </div>
+  </section>
 </div>
+
+<footer>
+  <p>&copy; 2025 Бетонный завод "Монолит"</p>
+</footer>
 
 <script>
   let map = null;
@@ -138,7 +543,7 @@
     });
   }
 
-  // Расчёт стоимости с учётом двух сценариев и реального маршрута
+  // Расчёт стоимости с учётом двух сценариев и округления
   function calculate() {
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
@@ -146,60 +551,85 @@
     if (!isNaN(mark) && !isNaN(volume) && deliveryPoint) {
       const deliveryCoords = deliveryPoint.geometry._coordinates;
 
-      // Создание маршрута
-      ymaps.route(
-        [
-          new ymaps.GeoObject({
-            geometry: { type: "Point", coordinates: factoryCoords }
-          }),
-          new ymaps.GeoObject({
-            geometry: { type: "Point", coordinates: deliveryCoords }
-          })
-        ],
-        {
-          results: 1,
-          mapStateAutoApply: true
+      // Расчёт расстояния между заводом и адресом (по прямой)
+      const distanceKm = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
+
+      // Добавляем 3.5 км для учёта реального маршрута
+      const adjustedDistance = distanceKm + 3.5;
+
+      let baseCost = mark * volume;
+      let deliveryCost = 0;
+
+      // Сценарий 1: объём ≤ 6 м³
+      if (volume <= 6) {
+        if (adjustedDistance <= 5) {
+          deliveryCost = Math.ceil(3000); // округление в большую сторону
+        } else {
+          deliveryCost = Math.ceil(3000 + 150 * (adjustedDistance - 5));
         }
-      ).then(function (res) {
-        const distanceKm = res[0].properties.get('distance') / 1000;
-
-        let baseCost = mark * volume;
-        let deliveryCost = 0;
-
-        // Сценарий 1: объём ≤ 6 м³
-        if (volume <= 6) {
-          if (distanceKm <= 5) {
-            deliveryCost = Math.ceil(3000); // округление в большую сторону
-          } else {
-            deliveryCost = Math.ceil(3000 + 150 * (distanceKm - 5));
-          }
+      }
+      // Сценарий 2: объём > 6 м³
+      else {
+        const baseDeliveryCost = 600 * volume;
+        if (adjustedDistance <= 5) {
+          deliveryCost = Math.ceil(baseDeliveryCost);
+        } else {
+          deliveryCost = Math.ceil(baseDeliveryCost + 150 * (adjustedDistance - 5));
         }
-        // Сценарий 2: объём > 6 м³
-        else {
-          const baseDeliveryCost = 600 * volume;
-          if (distanceKm <= 5) {
-            deliveryCost = Math.ceil(baseDeliveryCost);
-          } else {
-            deliveryCost = Math.ceil(baseDeliveryCost + 150 * (distanceKm - 5));
-          }
-        }
+      }
 
-        const total = baseCost + deliveryCost;
+      const total = baseCost + deliveryCost;
 
-        document.getElementById('result').innerHTML = `
-          Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
-          Стоимость доставки: ${deliveryCost} ₽<br>
-          Общая стоимость: ${total.toFixed(2)} ₽<br>
-          Расстояние: ${distanceKm.toFixed(2)} км
-        `;
-      }).catch(function (err) {
-        console.error("Ошибка маршрута:", err);
-        alert("Не удалось рассчитать маршрут.");
-      });
+      document.getElementById('result').innerHTML = `
+        Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
+        Стоимость доставки: ${deliveryCost} ₽<br>
+        Общая стоимость: ${total.toFixed(2)} ₽
+      `;
     } else {
       document.getElementById('result').textContent = "Введите корректные значения.";
     }
   }
+
+  // Функция расчёта расстояния между двумя точками
+  function getDistanceBetweenPoints(p1, p2) {
+    const R = 6371; // радиус Земли в км
+    const dLat = (p2[0] - p1[0]) * Math.PI / 180;
+    const dLon = (p2[1] - p1[1]) * Math.PI / 180;
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(p1[0] * Math.PI / 180) * Math.cos(p2[0] * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Расстояние в км
+  }
 </script>
-</body>
-</html>
+
+<!-- Подключение библиотек для PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  document.getElementById('download-pdf').addEventListener('click', function () {
+    const { jsPDF } = window.jspdf;
+
+    // Генерация первой страницы - Таблица прайса
+    html2canvas(document.getElementById('price-table'), { scale: 2 }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+      // Первая страница готова — добавляем вторую страницу с коммерческим предложением
+      pdf.addPage();
+
+      const text = `
+        Коммерческое предложение
+
+        Уважаемые клиенты!
+
+        Мы рады предложить Вам выгодные условия сотрудничества при заказе бетона и строительных материалов у
