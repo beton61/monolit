@@ -66,6 +66,8 @@
       border-radius: 6px;
     }
   </style>
+  <!-- Яндекс.Карты API -->
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
 </head>
 <body>
 
@@ -99,8 +101,6 @@
   <div id="map"></div>
 </div>
 
-<!-- Яндекс.Карты API -->
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
 <script>
   let map = null;
   let deliveryPoint = null;
@@ -122,38 +122,46 @@
     map.geoObjects.add(factoryMarker);
   }
 
-  // Поиск адреса через HTTP Геокодер
+  // Поиск адреса через HTTP Геокодер + прокси
   function searchAddress() {
     const address = document.getElementById('address').value.trim();
     if (!address) return;
 
     const geocodeUrl = `https://geocode-maps.yandex.ru/1.x/?apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9&format=json&geocode=${encodeURIComponent(address)}`;
 
-    fetch(geocodeUrl)
+    // Прокси для обхода CORS
+    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(geocodeUrl);
+
+    fetch(proxyUrl)
       .then(res => res.json())
       .then(data => {
-        const geoObjectCollection = data.response.GeoObjectCollection;
-        if (geoObjectCollection.featureMember.length > 0) {
-          const geoObject = geoObjectCollection.featureMember[0].GeoObject;
-          const coords = [
-            parseFloat(geoObject.Point.pos.split(' ')[1]), // Широта
-            parseFloat(geoObject.Point.pos.split(' ')[0])  // Долгота
-          ];
+        try {
+          const geoObjectCollection = JSON.parse(data.contents).response.GeoObjectCollection;
+          if (geoObjectCollection.featureMember.length > 0) {
+            const geoObject = geoObjectCollection.featureMember[0].GeoObject;
+            const coords = [
+              parseFloat(geoObject.Point.pos.split(' ')[1]), // Широта
+              parseFloat(geoObject.Point.pos.split(' ')[0])  // Долгота
+            ];
 
-          map.setCenter(coords, 14);
+            map.setCenter(coords, 14);
 
-          if (deliveryPoint) {
-            map.geoObjects.remove(deliveryPoint);
+            if (deliveryPoint) {
+              map.geoObjects.remove(deliveryPoint);
+            }
+
+            deliveryPoint = new ymaps.Placemark(coords, {
+              balloonContent: 'Адрес доставки'
+            });
+            map.geoObjects.add(deliveryPoint);
+
+            calculateDistanceAndCost(coords);
+          } else {
+            alert('Адрес не найден.');
           }
-
-          deliveryPoint = new ymaps.Placemark(coords, {
-            balloonContent: 'Адрес доставки'
-          });
-          map.geoObjects.add(deliveryPoint);
-
-          calculateDistanceAndCost(coords);
-        } else {
-          alert('Адрес не найден.');
+        } catch (error) {
+          console.error("Ошибка парсинга:", error);
+          alert('Не удалось найти адрес.');
         }
       })
       .catch(error => {
