@@ -66,13 +66,13 @@
       border-radius: 6px;
     }
   </style>
-  <!-- Яндекс.Карты API -->
-  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
+  <!-- Яндекс.Карты API с полным пакетом -->
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9&load=package.full"></script>
 </head>
 <body>
 
 <div class="container">
-  <h2>Калькулятор стоти доставки</h2>
+  <h2>Кор стоимости доставки</h2>
 
   <label for="mark">Выберите марку:</label>
   <select id="mark">
@@ -138,7 +138,7 @@
     });
   }
 
-  // Расчёт стоимости с учётом двух сценариев и округления в большую сторону
+  // Расчёт стоимости с учётом двух сценариев и реального маршрута
   function calculate() {
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
@@ -146,59 +146,59 @@
     if (!isNaN(mark) && !isNaN(volume) && deliveryPoint) {
       const deliveryCoords = deliveryPoint.geometry._coordinates;
 
-      // Расчёт расстояния между заводом и адресом (по прямой)
-      const distanceKm = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
-
-      // Добавляем 3.5 км для учёта реального маршрута
-      const adjustedDistance = distanceKm + 3.5;
-
-      let baseCost = mark * volume;
-      let deliveryCost = 0;
-
-      // Сценарий 1: объём ≤ 6 м³
-      if (volume <= 6) {
-        if (adjustedDistance <= 5) {
-          deliveryCost = Math.ceil(3000); // округление в большую сторону
-        } else {
-          deliveryCost = Math.ceil(3000 + 150 * (adjustedDistance - 5));
+      // Создание маршрута
+      ymaps.route(
+        [
+          new ymaps.GeoObject({
+            geometry: { type: "Point", coordinates: factoryCoords }
+          }),
+          new ymaps.GeoObject({
+            geometry: { type: "Point", coordinates: deliveryCoords }
+          })
+        ],
+        {
+          results: 1,
+          mapStateAutoApply: true
         }
-      }
-      // Сценарий 2: объём > 6 м³
-      else {
-        const baseDeliveryCost = 600 * volume;
-        if (adjustedDistance <= 5) {
-          deliveryCost = Math.ceil(baseDeliveryCost);
-        } else {
-          deliveryCost = Math.ceil(baseDeliveryCost + 150 * (adjustedDistance - 5));
+      ).then(function (res) {
+        const distanceKm = res[0].properties.get('distance') / 1000;
+
+        let baseCost = mark * volume;
+        let deliveryCost = 0;
+
+        // Сценарий 1: объём ≤ 6 м³
+        if (volume <= 6) {
+          if (distanceKm <= 5) {
+            deliveryCost = Math.ceil(3000); // округление в большую сторону
+          } else {
+            deliveryCost = Math.ceil(3000 + 150 * (distanceKm - 5));
+          }
         }
-      }
+        // Сценарий 2: объём > 6 м³
+        else {
+          const baseDeliveryCost = 600 * volume;
+          if (distanceKm <= 5) {
+            deliveryCost = Math.ceil(baseDeliveryCost);
+          } else {
+            deliveryCost = Math.ceil(baseDeliveryCost + 150 * (distanceKm - 5));
+          }
+        }
 
-      const total = baseCost + deliveryCost;
+        const total = baseCost + deliveryCost;
 
-      document.getElementById('result').innerHTML = `
-        Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
-        Стоимость доставки: ${deliveryCost} ₽<br>
-        Общая стоимость: ${total.toFixed(2)} ₽<br>
-        Расстояние: ${adjustedDistance.toFixed(2)} км
-      `;
+        document.getElementById('result').innerHTML = `
+          Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
+          Стоимость доставки: ${deliveryCost} ₽<br>
+          Общая стоимость: ${total.toFixed(2)} ₽<br>
+          Расстояние: ${distanceKm.toFixed(2)} км
+        `;
+      }).catch(function (err) {
+        console.error("Ошибка маршрута:", err);
+        alert("Не удалось рассчитать маршрут.");
+      });
     } else {
       document.getElementById('result').textContent = "Введите корректные значения.";
     }
-  }
-
-  // Функция расчёта расстояния между двумя точками
-  function getDistanceBetweenPoints(p1, p2) {
-    const R = 6371; // радиус Земли в км
-    const dLat = (p2[0] - p1[0]) * Math.PI / 180;
-    const dLon = (p2[1] - p1[1]) * Math.PI / 180;
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(p1[0] * Math.PI / 180) * Math.cos(p2[0] * Math.PI / 180) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Расстояние в км
   }
 </script>
 </body>
