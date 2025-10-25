@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Калькулятор стоимости доставки</title>
+  <title>Калькулятор доставки бетона</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -129,20 +129,26 @@
         const address = this.value.trim();
         if (!address) return;
 
-        // Поиск координат через Nominatim (без прокси)
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+        // Поиск через Nominatim + прокси для обхода CORS
+        fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))}`)
           .then(res => res.json())
           .then(data => {
-            if (data.length > 0) {
-              const lat = parseFloat(data[0].lat);
-              const lon = parseFloat(data[0].lon);
-              map.setView([lat, lon], 14);
-              L.marker([lat, lon]).addTo(map).bindPopup('Адрес доставки');
-              deliveryLat = lat;
-              deliveryLng = lon;
-              calculate();
-            } else {
-              alert('Адрес не найден.');
+            try {
+              const json = JSON.parse(data.contents);
+              if (json.length > 0) {
+                const lat = parseFloat(json[0].lat);
+                const lon = parseFloat(json[0].lon);
+                map.setView([lat, lon], 14);
+                L.marker([lat, lon]).addTo(map).bindPopup('Адрес доставки');
+                deliveryLat = lat;
+                deliveryLng = lon;
+                calculate();
+              } else {
+                alert('Адрес не найден.');
+              }
+            } catch (error) {
+              console.error("Ошибка парсинга:", error);
+              alert('Не удалось найти адрес.');
             }
           });
       }
