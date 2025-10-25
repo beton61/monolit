@@ -129,16 +129,17 @@
         const address = this.value.trim();
         if (!address) return;
 
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+        // Используем Google Maps API для поиска координат
+        fetch(`https://maps.google.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&sensor=false&key=AIzaSyDvqVtKkOgXQmLjMnHfGZJ7pPZrFh1iEwY`)
           .then(res => res.json())
           .then(data => {
-            if (data.length > 0) {
-              const lat = parseFloat(data[0].lat);
-              const lon = parseFloat(data[0].lon);
-              map.setView([lat, lon], 14);
-              L.marker([lat, lon]).addTo(map).bindPopup('Адрес доставки');
+            if (data.results && data.results.length > 0) {
+              const lat = parseFloat(data.results[0].geometry.location.lat);
+              const lng = parseFloat(data.results[0].geometry.location.lng);
+              map.setView([lat, lng], 14);
+              L.marker([lat, lng]).addTo(map).bindPopup('Адрес доставки');
               deliveryLat = lat;
-              deliveryLng = lon;
+              deliveryLng = lng;
               calculate();
             } else {
               alert('Адрес не найден.');
