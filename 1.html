@@ -69,127 +69,130 @@
 </head>
 <body>
 
-  <div class="container">
-    <h2>Калькулятор стоимости доставки</h2>
+<div class="container">
+  <h2>Калькулятор стоимости доставки</h2>
 
-    <label for="mark">Выберите марку:</label>
-    <select id="mark">
-      <option value="2800">М100 - 2 800 ₽/м³</option>
-      <option value="3200">М150 - 3 200 ₽/м³</option>
-      <option value="3500">М200 - 3 500 ₽/м³</option>
-      <option value="4000">М250 - 4 000 ₽/м³</option>
-      <option value="4500">М300 - 4 500 ₽/м³</option>
-      <option value="5000">М350 - 5 000 ₽/м³</option>
-      <option value="5500">М400 - 5 500 ₽/м³</option>
-      <option value="6000">М450 - 6 000 ₽/м³</option>
-      <option value="6500">М500 - 6 500 ₽/м³</option>
-    </select>
+  <label for="mark">Выберите марку:</label>
+  <select id="mark">
+    <option value="2800">М100 - 2 800 ₽/м³</option>
+    <option value="3200">М150 - 3 200 ₽/м³</option>
+    <option value="3500">М200 - 3 500 ₽/м³</option>
+    <option value="4000">М250 - 4 000 ₽/м³</option>
+    <option value="4500">М300 - 4 500 ₽/м³</option>
+    <option value="5000">М350 - 5 000 ₽/м³</option>
+    <option value="5500">М400 - 5 500 ₽/м³</option>
+    <option value="6000">М450 - 6 000 ₽/м³</option>
+    <option value="6500">М500 - 6 500 ₽/м³</option>
+  </select>
 
-    <label for="volume">Объем (м³):</label>
-    <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
+  <label for="volume">Объем (м³):</label>
+  <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
 
-    <button onclick="openMap()">Выбрать адрес на карте</button>
+  <button onclick="openMap()">Выбрать адрес на карте</button>
 
-    <div class="result" id="result"></div>
+  <div class="result" id="result"></div>
 
-    <!-- Карта -->
-    <div id="map"></div>
-  </div>
+  <!-- Карта -->
+  <div id="map"></div>
+</div>
 
-  <!-- Yandex Maps API -->
-  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=60e03a93-ae40-4998-9cda-2785fd0a30bd" type="text/javascript"></script>
+<!-- Yandex Maps API -->
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=60e03a93-ae40-4998-9cda-2785fd0a30bd" type="text/javascript"></script>
 
-  <script>
-    let deliveryPoint = null;
+<script>
+  let deliveryPoint = null;
 
-    // Инициализация карты
-    function openMap() {
-      ymaps.ready(init);
-
-      function init() {
-        const map = new ymaps.Map('map', {
-          center: [47.2121, 39.7215], // Завод "Монолит-Дон", ул. Булгакова 5и, Батайск
-          zoom: 13,
-          controls: ['zoomControl']
-        });
-
-        // Маркер завода
-        const factoryMarker = new ymaps.Placemark([47.2121, 39.7215], {
-          balloonContent: 'Завод'
-        });
-        map.geoObjects.add(factoryMarker);
-
-        // Поиск адреса
-        const searchControl = new ymaps.control.SearchControl({
-          options: {
-            noPlacemark: true,
-            provider: 'yandex#search'
-          }
-        });
-        map.controls.add(searchControl);
-
-        // Обработчик выбора адреса
-        searchControl.events.add('resultselect', function(e) {
-          const index = e.get('index');
-          const result = searchControl.getResults(index)[0];
-          const coords = result.geometry.getCoordinates();
-
-          deliveryPoint = coords;
-
-          // Добавляем маркер точки доставки
-          const deliveryMarker = new ymaps.Placemark(coords, {
-            balloonContent: 'Точка доставки'
-          });
-          map.geoObjects.add(deliveryMarker);
-
-          calculate();
-        });
-      }
+  // Открытие карты
+  function openMap() {
+    if (typeof ymaps === 'undefined') {
+      alert("API Яндекс.Карт ещё не загружен.");
+      return;
     }
 
-    // Расчёт расстояния между двумя точками
-    function getDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371; // радиус Земли в км
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return R * c; // расстояние в км
-    }
+    ymaps.ready(function () {
+      const map = new ymaps.Map('map', {
+        center: [47.2121, 39.7215], // Завод "Монолит-Дон", Батайск
+        zoom: 13,
+        controls: ['zoomControl']
+      });
 
-    // Калькулятор
-    function calculate() {
-      const mark = parseFloat(document.getElementById('mark').value);
-      const volume = parseFloat(document.getElementById('volume').value);
+      // Маркер завода
+      const factoryMarker = new ymaps.Placemark([47.2121, 39.7215], {
+        balloonContent: 'Завод'
+      });
+      map.geoObjects.add(factoryMarker);
 
-      if (!isNaN(mark) && !isNaN(volume) && deliveryPoint) {
-        const baseCost = mark * volume;
-        const factoryLat = 47.2121;
-        const factoryLng = 39.7215;
-        const distance = getDistance(factoryLat, factoryLng, deliveryPoint[0], deliveryPoint[1]);
-
-        let deliveryCost = 0;
-        if (distance <= 5) {
-          deliveryCost = 3000;
-        } else {
-          deliveryCost = 3000 + (distance - 5) * 500;
+      // Поиск адреса
+      const searchControl = new ymaps.control.SearchControl({
+        options: {
+          noPlacemark: true,
+          provider: 'yandex#search'
         }
+      });
+      map.controls.add(searchControl);
 
-        const total = baseCost + deliveryCost;
+      // Обработчик выбора адреса
+      searchControl.events.add('resultselect', function (e) {
+        const index = e.get('index');
+        const result = searchControl.getResults(index)[0];
+        const coords = result.geometry.getCoordinates();
 
-        document.getElementById('result').innerHTML = `
-          Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
-          Стоимость доставки: ${deliveryCost} ₽<br>
-          Общая стоимость: ${total.toFixed(2)} ₽<br>
-          Расстояние: ${distance.toFixed(2)} км
-        `;
+        deliveryPoint = coords;
+
+        // Добавляем маркер точки доставки
+        const deliveryMarker = new ymaps.Placemark(coords, {
+          balloonContent: 'Точка доставки'
+        });
+        map.geoObjects.add(deliveryMarker);
+
+        calculate();
+      });
+    });
+  }
+
+  // Расчёт расстояния между двумя точками
+  function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // радиус Земли в км
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // расстояние в км
+  }
+
+  // Калькулятор
+  function calculate() {
+    const mark = parseFloat(document.getElementById('mark').value);
+    const volume = parseFloat(document.getElementById('volume').value);
+
+    if (!isNaN(mark) && !isNaN(volume) && deliveryPoint) {
+      const baseCost = mark * volume;
+      const factoryLat = 47.2121;
+      const factoryLng = 39.7215;
+      const distance = getDistance(factoryLat, factoryLng, deliveryPoint[0], deliveryPoint[1]);
+
+      let deliveryCost = 0;
+      if (distance <= 5) {
+        deliveryCost = 3000;
       } else {
-        document.getElementById('result').textContent = "Введите корректные значения и выберите адрес.";
+        deliveryCost = 3000 + (distance - 5) * 500;
       }
+
+      const total = baseCost + deliveryCost;
+
+      document.getElementById('result').innerHTML = `
+        Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
+        Стоимость доставки: ${deliveryCost} ₽<br>
+        Общая стоимость: ${total.toFixed(2)} ₽<br>
+        Расстояние: ${distance.toFixed(2)} км
+      `;
+    } else {
+      document.getElementById('result').textContent = "Введите корректные значения и выберите адрес.";
     }
-  </script>
+  }
+</script>
 </body>
 </html>
