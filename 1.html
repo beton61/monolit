@@ -72,7 +72,7 @@
 <body>
 
 <div class="container">
-  <h2>Калькулятор стоимости доставки</h2>
+  <h2>Калькулятор сти доставки</h2>
 
   <label for="mark">Выберите марку:</label>
   <select id="mark">
@@ -146,20 +146,24 @@
     if (!isNaN(mark) && !isNaN(volume) && deliveryPoint) {
       const deliveryCoords = deliveryPoint.geometry._coordinates;
 
-      // Пример расчёта расстояния между двумя точками (по прямой)
+      // Расчёт расстояния между заводом и адресом (по прямой)
       const distanceKm = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
 
       let baseCost = mark * volume;
       let deliveryCost = 0;
 
+      // Правило 1: объём ≤ 6 м³ и расстояние ≤ 5 км → 3000 ₽
       if (volume <= 6 && distanceKm <= 5) {
         deliveryCost = 3000;
-      } else if (volume > 6) {
+      }
+      // Правило 2: объём > 6 м³ → 600 × объем
+      else if (volume > 6) {
         deliveryCost = 600 * volume;
       }
 
+      // Правило 3: расстояние > 5 км → 3000 + 150 × (расстояние - 5)
       if (distanceKm > 5) {
-        deliveryCost += 150 * (distanceKm - 5);
+        deliveryCost = 3000 + 150 * (distanceKm - 5);
       }
 
       const total = baseCost + deliveryCost;
@@ -177,15 +181,17 @@
 
   // Функция расчёта расстояния между двумя точками
   function getDistanceBetweenPoints(p1, p2) {
-    const R = 6371;
+    const R = 6371; // радиус Земли в км
     const dLat = (p2[0] - p1[0]) * Math.PI / 180;
     const dLon = (p2[1] - p1[1]) * Math.PI / 180;
+
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(p1[0] * Math.PI / 180) * Math.cos(p2[0] * Math.PI / 180) *
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    return R * c; // Расстояние в км
   }
 </script>
 </body>
