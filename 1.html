@@ -66,13 +66,13 @@
       border-radius: 6px;
     }
   </style>
-  <!-- Яндекс.Карты API -->
+  <!-- Яндекс.Карты API с полным пакетом -->
   <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9&load=package.full"></script>
 </head>
 <body>
 
 <div class="container">
-  <h2>Калькулятор ст доставки</h2>
+  <h2>Калор стоимости доставки</h2>
 
   <label for="mark">Выберите марку:</label>
   <select id="mark">
@@ -139,7 +139,7 @@
     });
   }
 
-  // Расчёт стоимости с учётом реального маршрута
+  // Расчёт стоимости с учётом новых правил и маршрута
   function calculate() {
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
@@ -151,32 +151,36 @@
         map.geoObjects.remove(route);
       }
 
-      // Создаём маршрут
-      const router = new ymaps.router.RoutingModel(
-        [factoryCoords, deliveryCoords],
+      // Создание маршрута
+      ymaps.route(
+        [
+          new ymaps.GeoObject({
+            geometry: { type: "Point", coordinates: factoryCoords }
+          }),
+          new ymaps.GeoObject({
+            geometry: { type: "Point", coordinates: deliveryCoords }
+          })
+        ],
         {
           results: 1,
           mapStateAutoApply: true
         }
-      );
-
-      router.route(function (err, res) {
-        if (err) {
-          console.error("Ошибка маршрута:", err);
-          alert("Не удалось рассчитать маршрут.");
-          return;
-        }
-
+      ).then(function (res) {
         const distanceKm = res[0].properties.get('distance') / 1000;
 
+        let baseCost = mark * volume;
         let deliveryCost = 0;
-        if (distanceKm <= 5) {
+
+        if (volume <= 6 && distanceKm <= 5) {
           deliveryCost = 3000;
-        } else {
-          deliveryCost = 3000 + (distanceKm - 5) * 500;
+        } else if (volume > 6) {
+          deliveryCost = 600 * volume;
         }
 
-        const baseCost = mark * volume;
+        if (distanceKm > 5) {
+          deliveryCost += 150 * (distanceKm - 5);
+        }
+
         const total = baseCost + deliveryCost;
 
         document.getElementById('result').innerHTML = `
@@ -188,6 +192,9 @@
 
         route = res[0];
         map.geoObjects.add(route);
+      }).catch(function (err) {
+        console.error("Ошибка маршрута:", err);
+        alert("Не удалось рассчитать маршрут.");
       });
     } else {
       document.getElementById('result').textContent = "Введите корректные значения.";
