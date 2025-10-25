@@ -72,7 +72,7 @@
 <body>
 
 <div class="container">
-  <h2>Калькулятор стоимости доставккк</h2>
+  <h2>Калькулятор стоимости доставквввввви</h2>
 
   <label for="mark">Выберите марку:</label>
   <select id="mark">
@@ -90,10 +90,7 @@
   <label for="volume">Объем (м³):</label>
   <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
 
-  <label for="address">Адрес доставки:</label>
-  <input type="text" id="address" placeholder="Введите адрес">
-
-  <button onclick="searchAddress()">Найти адрес</button>
+  <button onclick="calculate()">Рассчитать стоимость</button>
 
   <div class="result" id="result"></div>
 
@@ -105,75 +102,44 @@
   let map = null;
   let deliveryPoint = null;
 
+  // Координаты завода
+  const factoryCoords = [47.2121, 39.7215]; // Батайск
+
   // Инициализация карты
   ymaps.ready(init);
 
   function init() {
     map = new ymaps.Map('map', {
-      center: [47.2121, 39.7215], // Батайск
+      center: factoryCoords,
       zoom: 13,
       controls: ['zoomControl']
     });
 
     // Маркер завода
-    const factoryMarker = new ymaps.Placemark([47.2121, 39.7215], {
+    const factoryMarker = new ymaps.Placemark(factoryCoords, {
       balloonContent: 'Завод'
     });
     map.geoObjects.add(factoryMarker);
-  }
 
-  // Поиск адреса через HTTP Геокодер + прокси
-  function searchAddress() {
-    const address = document.getElementById('address').value.trim();
-    if (!address) return;
+    // Слушатель клика на карту
+    map.events.add('click', function(e) {
+      const coords = e.get('coords');
 
-    const geocodeUrl = `https://geocode-maps.yandex.ru/1.x/?apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9&format=json&geocode=${encodeURIComponent(address)}`;
+      if (deliveryPoint) {
+        map.geoObjects.remove(deliveryPoint);
+      }
 
-    // Прокси для обхода CORS
-    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(geocodeUrl);
-
-    fetch(proxyUrl)
-      .then(res => res.json())
-      .then(data => {
-        try {
-          const geoObjectCollection = JSON.parse(data.contents).response.GeoObjectCollection;
-          if (geoObjectCollection.featureMember.length > 0) {
-            const geoObject = geoObjectCollection.featureMember[0].GeoObject;
-            const coords = [
-              parseFloat(geoObject.Point.pos.split(' ')[1]), // Широта
-              parseFloat(geoObject.Point.pos.split(' ')[0])  // Долгота
-            ];
-
-            map.setCenter(coords, 14);
-
-            if (deliveryPoint) {
-              map.geoObjects.remove(deliveryPoint);
-            }
-
-            deliveryPoint = new ymaps.Placemark(coords, {
-              balloonContent: 'Адрес доставки'
-            });
-            map.geoObjects.add(deliveryPoint);
-
-            calculateDistanceAndCost(coords);
-          } else {
-            alert('Адрес не найден.');
-          }
-        } catch (error) {
-          console.error("Ошибка парсинга:", error);
-          alert('Не удалось найти адрес.');
-        }
-      })
-      .catch(error => {
-        console.error("Ошибка при геокодировании:", error);
-        alert('Произошла ошибка при поиске адреса.');
+      deliveryPoint = new ymaps.Placemark(coords, {
+        balloonContent: 'Адрес доставки'
       });
+      map.geoObjects.add(deliveryPoint);
+
+      calculateDistanceAndCost(coords);
+    });
   }
 
   // Расчёт расстояния и стоимости
   function calculateDistanceAndCost(deliveryCoords) {
-    const factoryCoords = [47.2121, 39.7215];
-
     const distance = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
