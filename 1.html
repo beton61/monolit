@@ -66,9 +66,6 @@
       border-radius: 6px;
     }
   </style>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
 
@@ -91,7 +88,10 @@
   <label for="volume">Объем (м³):</label>
   <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
 
-  <button onclick="openMap()">Выбрать адрес на карте</button>
+  <label for="address">Адрес доставки:</label>
+  <input type="text" id="address" placeholder="Введите адрес">
+
+  <button onclick="searchAddress()">Найти адрес</button>
 
   <div class="result" id="result"></div>
 
@@ -99,90 +99,81 @@
   <div id="map"></div>
 </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Яндекс.Карты API -->
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
 <script>
-  let deliveryLat = null;
-  let deliveryLng = null;
+  let map = null;
+  let deliveryPoint = null;
 
-  function openMap() {
-    const map = L.map('map').setView([47.2121, 39.7215], 13); // Батайск
+  // Инициализация карты
+  ymaps.ready(init);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
-
-    L.marker([47.2121, 39.7215]).addTo(map)
-      .bindPopup('Завод')
-      .openPopup();
-
-    const searchBox = document.createElement('input');
-    searchBox.type = 'text';
-    searchBox.placeholder = 'Введите адрес доставки...';
-    searchBox.style.width = '100%';
-    searchBox.style.marginTop = '10px';
-
-    document.body.appendChild(searchBox);
-
-    searchBox.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        const address = this.value.trim();
-        if (!address) return;
-
-        fetch(`https://api.proxysite.net/get?url=${encodeURIComponent('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))}`)
-          .then(res => res.json())
-          .then(data => {
-            try {
-              const json = JSON.parse(data.contents);
-              if (json.length > 0) {
-                const lat = parseFloat(json[0].lat);
-                const lon = parseFloat(json[0].lon);
-                map.setView([lat, lon], 14);
-                L.marker([lat, lon]).addTo(map).bindPopup('Адрес доставки');
-                deliveryLat = lat;
-                deliveryLng = lon;
-                calculate();
-              } else {
-                alert('Адрес не найден.');
-              }
-            } catch (error) {
-              console.error("Ошибка парсинга:", error);
-              alert('Не удалось найти адрес.');
-            }
-          })
-          .catch(error => {
-            console.error("Ошибка запроса:", error);
-            alert('Произошла ошибка при поиске адреса.');
-          });
-      }
+  function init() {
+    map = new ymaps.Map('map', {
+      center: [47.2121, 39.7215], // Батайск
+      zoom: 13,
+      controls: ['zoomControl']
     });
+
+    // Маркер завода
+    const factoryMarker = new ymaps.Placemark([47.2121, 39.7215], {
+      balloonContent: 'Завод'
+    });
+    map.geoObjects.add(factoryMarker);
   }
 
-  // Расчёт расстояния между двумя точками
-  function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+  // Поиск адреса через HTTP Геокодер
+  function searchAddress() {
+    const address = document.getElementById('address').value.trim();
+    if (!address) return;
+
+    const geocodeUrl = `https://geocode-maps.yandex.ru/1.x/?apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9&format=json&geocode=${encodeURIComponent(address)}`;
+
+    fetch(geocodeUrl)
+      .then(res => res.json())
+      .then(data => {
+        const geoObjectCollection = data.response.GeoObjectCollection;
+        if (geoObjectCollection.featureMember.length > 0) {
+          const geoObject = geoObjectCollection.featureMember[0].GeoObject;
+          const coords = [
+            parseFloat(geoObject.Point.pos.split(' ')[1]), // Широта
+            parseFloat(geoObject.Point.pos.split(' ')[0])  // Долгота
+          ];
+
+          map.setCenter(coords, 14);
+
+          if (deliveryPoint) {
+            map.geoObjects.remove(deliveryPoint);
+          }
+
+          deliveryPoint = new ymaps.Placemark(coords, {
+            balloonContent: 'Адрес доставки'
+          });
+          map.geoObjects.add(deliveryPoint);
+
+          calculateDistanceAndCost(coords);
+        } else {
+          alert('Адрес не найден.');
+        }
+      })
+      .catch(error => {
+        console.error("Ошибка при геокодировании:", error);
+        alert('Произошла ошибка при поиске адреса.');
+      });
   }
 
-  // Калькулятор
-  function calculate() {
+  // Расчёт расстояния и стоимости
+  function calculateDistanceAndCost(deliveryCoords) {
+    const factoryCoords = [47.2121, 39.7215];
+
+    const distance = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
 
-    if (!isNaN(mark) && !isNaN(volume) && deliveryLat && deliveryLng) {
+    if (!isNaN(mark) && !isNaN(volume)) {
       const baseCost = mark * volume;
-      const factoryLat = 47.2121;
-      const factoryLng = 39.7215;
-      const distance = getDistance(factoryLat, factoryLng, deliveryLat, deliveryLng);
-
       let deliveryCost = 0;
+
       if (distance <= 5) {
         deliveryCost = 3000;
       } else {
@@ -198,8 +189,21 @@
         Расстояние: ${distance.toFixed(2)} км
       `;
     } else {
-      document.getElementById('result').textContent = "Введите корректные значения и выберите адрес.";
+      document.getElementById('result').textContent = "Введите корректные значения.";
     }
+  }
+
+  // Функция расчёта расстояния между двумя точками
+  function getDistanceBetweenPoints(p1, p2) {
+    const R = 6371;
+    const dLat = (p2[0] - p1[0]) * Math.PI / 180;
+    const dLon = (p2[1] - p1[1]) * Math.PI / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(p1[0] * Math.PI / 180) * Math.cos(p2[0] * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
   }
 </script>
 </body>
