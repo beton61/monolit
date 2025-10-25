@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Бетонный завод "Монолит"</title>
-  <meta name="description" content="Производство и поставка бетона, ФБС, полусфер, бетононасосов. Доставка по всей России. Удобный калькулятор стоимости.">
-  <meta name="keywords" content="бетон, фбс, бетононасосы, полусферы, доставка бетона, цена на бетон, расчет стоимости">
+  <title>Калькулятор стоимости бетона</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -68,24 +66,6 @@
       border-radius: 10px;
       padding: 15px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-    }
-
-    .service-item {
-      background-color: #ecf0f1;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    .service-item h4 {
-      margin: 0 0 5px;
-      font-size: 1rem;
     }
 
     .calculator-block {
@@ -154,99 +134,12 @@
       font-size: 0.9rem;
     }
 
-    .reviews {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .review {
-      background-color: #ecf0f1;
-      padding: 10px;
-      border-radius: 8px;
-    }
-
-    .review h4 {
-      margin: 0;
-      font-size: 1rem;
-    }
-
-    .review p {
-      margin: 5px 0 0;
-      color: #555;
-      font-size: 0.9rem;
-    }
-
-    .contacts {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .contacts a {
-      color: #3498db;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
     footer {
       text-align: center;
       padding: 15px;
       background-color: #eee;
       margin-top: 30px;
       font-size: 0.85rem;
-    }
-
-    /* Стили для прайса */
-    .price-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      font-size: 0.9rem;
-    }
-
-    .price-table th,
-    .price-table td {
-      padding: 8px 10px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .price-table th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-    }
-
-    .price-table tr:hover {
-      background-color: #f9f9f9;
-    }
-
-    .price-table tr:nth-child(even) {
-      background-color: #fafafa;
-    }
-
-    @media (min-width: 600px) {
-      .container {
-        max-width: 900px;
-      }
-
-      header h1 {
-        font-size: 2.5rem;
-      }
-
-      .call-button {
-        top: 20px;
-        right: 20px;
-        padding: 10px 20px;
-      }
-
-      .result {
-        padding: 15px;
-      }
-
-      .review p {
-        font-size: 1rem;
-      }
     }
   </style>
   <!-- Яндекс.Карты API -->
@@ -256,47 +149,11 @@
 
 <header>
   <button class="call-button" onclick="window.location.href='tel:+79991234567'">Позвонить +7 (999) 123-45-67</button>
-  <h1>Бетонный завод "Монолит"</h1>
-  <p>Производство и поставка качественного бетона и строительных материалов</p>
+  <h1>Калькулятор стоимости бетона</h1>
+  <p>Рассчитайте стоимость бетона и доставки до вашей точки</p>
 </header>
 
 <div class="container">
-
-  <section class="block">
-    <h2>О нас</h2>
-    <p>Мы — надежный производитель бетона и строительных материалов в регионе. С 2010 года обеспечиваем строительные компании и частных заказчиков высококачественными материалами.</p>
-    <p>Наши услуги включают: поставку бетона, готовые изделия из бетона, аренду техники и доставку.</p>
-  </section>
-
-  <section class="block">
-    <h2>Наши услуги</h2>
-    <div class="services-grid">
-      <div class="service-item">
-        <h4>Бетон М100 - М500</h4>
-        <p>Различные марки бетона по выгодной цене. Доставка в любое время суток.</p>
-      </div>
-      <div class="service-item">
-        <h4>ФБС блоки</h4>
-        <p>Фундаментные блоки для ленточных фундаментов. Высокая прочность и точные размеры.</p>
-      </div>
-      <div class="service-item">
-        <h4>Полусферы</h4>
-        <p>Изделия из бетона для оформления входных групп, фонтанов, памятников.</p>
-      </div>
-      <div class="service-item">
-        <h4>Бетононасосы</h4>
-        <p>Аренда бетононасосов. Быстрая и удобная подача бетона на высоту и в труднодоступные места.</p>
-      </div>
-      <div class="service-item">
-        <h4>Доставка</h4>
-        <p>Собственный автопарк. Доставка бетона до объекта в любом объеме.</p>
-      </div>
-      <div class="service-item">
-        <h4>Ремонт и отделка</h4>
-        <p>Предлагаем комплексные решения под ключ. От проекта до финишной отделки.</p>
-      </div>
-    </div>
-  </section>
 
   <section class="block calculator-block">
     <h2>Калькулятор стоимости и карта</h2>
@@ -325,150 +182,6 @@
       <div class="map-container">
         <div id="map"></div>
       </div>
-    </div>
-  </section>
-
-  <section class="block">
-    <h2>Прайс-лист</h2>
-    <table class="price-table">
-      <thead>
-        <tr>
-          <th>Наименование</th>
-          <th>Цена</th>
-          <th>Описание / Назначение</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Бетон -->
-        <tr><td colspan="3"><strong>Бетон</strong></td></tr>
-        <tr>
-          <td>М100</td>
-          <td>2 800 ₽/м³</td>
-          <td>Низкая прочность, подходит для подготовительных работ</td>
-        </tr>
-        <tr>
-          <td>М150</td>
-          <td>3 200 ₽/м³</td>
-          <td>Подходит для устройства оснований, дорожных покрытий</td>
-        </tr>
-        <tr>
-          <td>М200</td>
-          <td>3 500 ₽/м³</td>
-          <td>Общестроительный бетон, подходит для фундаментов, стен</td>
-        </tr>
-        <tr>
-          <td>М250</td>
-          <td>4 000 ₽/м³</td>
-          <td>Подходит для перекрытий, плит, колонн</td>
-        </tr>
-        <tr>
-          <td>М300</td>
-          <td>4 500 ₽/м³</td>
-          <td>Для ответственных конструкций, например, монолитных перекрытий</td>
-        </tr>
-        <tr>
-          <td>М350</td>
-          <td>5 000 ₽/м³</td>
-          <td>Подходит для железобетонных конструкций высокой прочности</td>
-        </tr>
-        <tr>
-          <td>М400</td>
-          <td>5 500 ₽/м³</td>
-          <td>Используется для мостов, подземных сооружений</td>
-        </tr>
-        <tr>
-          <td>М450</td>
-          <td>6 000 ₽/м³</td>
-          <td>Высокопрочный бетон для специальных конструкций</td>
-        </tr>
-        <tr>
-          <td>М500</td>
-          <td>6 500 ₽/м³</td>
-          <td>Наиболее прочный бетон, используется в гидротехническом строительстве</td>
-        </tr>
-
-        <!-- ФБС блоки -->
-        <tr><td colspan="3"><strong>ФБС блоки</strong></td></tr>
-        <tr>
-          <td>ФБС 24.4.6</td>
-          <td>3 500 ₽/шт</td>
-          <td>Применяются для устройства ленточных фундаментов</td>
-        </tr>
-        <tr>
-          <td>ФБС 24.5.6</td>
-          <td>3 700 ₽/шт</td>
-          <td>Подходят для тяжёлых нагрузок и грунтов</td>
-        </tr>
-        <tr>
-          <td>ФБС 24.6.6</td>
-          <td>3 900 ₽/шт</td>
-          <td>Для фундаментов под здания и сооружения</td>
-        </tr>
-
-        <!-- Полусферы -->
-        <tr><td colspan="3"><strong>Полусферы</strong></td></tr>
-        <tr>
-          <td>Полусфера 60 см</td>
-          <td>2 200 ₽/шт</td>
-          <td>Для малых архитектурных форм, украшений</td>
-        </tr>
-        <tr>
-          <td>Полусфера 80 см</td>
-          <td>3 000 ₽/шт</td>
-          <td>Подходят для оформления входов, фонтанов</td>
-        </tr>
-        <tr>
-          <td>Полусфера 1 м</td>
-          <td>4 000 ₽/шт</td>
-          <td>Для больших объектов и архитектурных решений</td>
-        </tr>
-
-        <!-- Раствор -->
-        <tr><td colspan="3"><strong>Раствор</strong></td></tr>
-        <tr>
-          <td>Цементный раствор М150</td>
-          <td>1 800 ₽/м³</td>
-          <td>Подходит для кладки кирпича, штукатурки</td>
-        </tr>
-        <tr>
-          <td>Цементный раствор М200</td>
-          <td>2 100 ₽/м³</td>
-          <td>Для укладки плит, камней, бетонных блоков</td>
-        </tr>
-        <tr>
-          <td>Цементный раствор М300</td>
-          <td>2 400 ₽/м³</td>
-          <td>Для высоконагруженных конструкций</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="block">
-    <h2>Отзывы клиентов</h2>
-    <div class="reviews">
-      <div class="review">
-        <h4>Иван Иванов</h4>
-        <p>Хороший завод, быстрая доставка. Всё пришло в срок, качество отличное!</p>
-      </div>
-      <div class="review">
-        <h4>Елена Петрова</h4>
-        <p>Работали с ними на новом объекте. Цены честные, персонал профессиональный.</p>
-      </div>
-      <div class="review">
-        <h4>Алексей Смирнов</h4>
-        <p>Все понравилось, особенно оперативность и внимание к деталям.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="block">
-    <h2>Контакты</h2>
-    <div class="contacts">
-      <p><strong>Телефон:</strong> +7 (999) 123-45-67</p>
-      <p><strong>Email:</strong> <a href="mailto:info@monolitbeton.ru">info@monolitbeton.ru</a></p>
-      <p><strong>Адрес:</strong> г. Батайск, ул. Промышленная, д. 45</p>
-      <p><strong>Режим работы:</strong> Пн–Пт: 8:00–18:00, Сб: 9:00–15:00</p>
     </div>
   </section>
 </div>
