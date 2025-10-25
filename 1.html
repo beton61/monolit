@@ -66,13 +66,13 @@
       border-radius: 6px;
     }
   </style>
-  <!-- Яндекс.Карты API с полным пакетом -->
-  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9&load=package.full"></script>
+  <!-- Яндекс.Карты API -->
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
 </head>
 <body>
 
 <div class="container">
-  <h2>Калор стоимости доставки</h2>
+  <h2>Калькулятор стоимости доставки</h2>
 
   <label for="mark">Выберите марку:</label>
   <select id="mark">
@@ -101,10 +101,9 @@
 <script>
   let map = null;
   let deliveryPoint = null;
-  let route = null;
 
   // Координаты завода
-  const factoryCoords = [47.2121, 39.7215]; // Батайск
+  const factoryCoords = [47.129696, 39.716890]; // Батайск
 
   // Инициализация карты
   ymaps.ready(init);
@@ -139,7 +138,7 @@
     });
   }
 
-  // Расчёт стоимости с учётом новых правил и маршрута
+  // Расчёт стоимости с учётом новых правил
   function calculate() {
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
@@ -147,58 +146,46 @@
     if (!isNaN(mark) && !isNaN(volume) && deliveryPoint) {
       const deliveryCoords = deliveryPoint.geometry._coordinates;
 
-      if (route) {
-        map.geoObjects.remove(route);
+      // Пример расчёта расстояния между двумя точками (по прямой)
+      const distanceKm = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
+
+      let baseCost = mark * volume;
+      let deliveryCost = 0;
+
+      if (volume <= 6 && distanceKm <= 5) {
+        deliveryCost = 3000;
+      } else if (volume > 6) {
+        deliveryCost = 600 * volume;
       }
 
-      // Создание маршрута
-      ymaps.route(
-        [
-          new ymaps.GeoObject({
-            geometry: { type: "Point", coordinates: factoryCoords }
-          }),
-          new ymaps.GeoObject({
-            geometry: { type: "Point", coordinates: deliveryCoords }
-          })
-        ],
-        {
-          results: 1,
-          mapStateAutoApply: true
-        }
-      ).then(function (res) {
-        const distanceKm = res[0].properties.get('distance') / 1000;
+      if (distanceKm > 5) {
+        deliveryCost += 150 * (distanceKm - 5);
+      }
 
-        let baseCost = mark * volume;
-        let deliveryCost = 0;
+      const total = baseCost + deliveryCost;
 
-        if (volume <= 6 && distanceKm <= 5) {
-          deliveryCost = 3000;
-        } else if (volume > 6) {
-          deliveryCost = 600 * volume;
-        }
-
-        if (distanceKm > 5) {
-          deliveryCost += 150 * (distanceKm - 5);
-        }
-
-        const total = baseCost + deliveryCost;
-
-        document.getElementById('result').innerHTML = `
-          Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
-          Стоимость доставки: ${deliveryCost} ₽<br>
-          Общая стоимость: ${total.toFixed(2)} ₽<br>
-          Расстояние: ${distanceKm.toFixed(2)} км
-        `;
-
-        route = res[0];
-        map.geoObjects.add(route);
-      }).catch(function (err) {
-        console.error("Ошибка маршрута:", err);
-        alert("Не удалось рассчитать маршрут.");
-      });
+      document.getElementById('result').innerHTML = `
+        Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
+        Стоимость доставки: ${deliveryCost} ₽<br>
+        Общая стоимость: ${total.toFixed(2)} ₽<br>
+        Расстояние: ${distanceKm.toFixed(2)} км
+      `;
     } else {
       document.getElementById('result').textContent = "Введите корректные значения.";
     }
+  }
+
+  // Функция расчёта расстояния между двумя точками
+  function getDistanceBetweenPoints(p1, p2) {
+    const R = 6371;
+    const dLat = (p2[0] - p1[0]) * Math.PI / 180;
+    const dLon = (p2[1] - p1[1]) * Math.PI / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(p1[0] * Math.PI / 180) * Math.cos(p2[0] * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
   }
 </script>
 </body>
