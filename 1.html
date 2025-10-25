@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Калькулятор стоимости доставки</title>
+  <title>Калькулятор доставки бетона</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -66,6 +66,9 @@
       border-radius: 6px;
     }
   </style>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
 
@@ -96,57 +99,54 @@
   <div id="map"></div>
 </div>
 
-<!-- Yandex Maps API -->
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9" type="text/javascript"></script>
-
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-  let deliveryPoint = null;
+  let deliveryLat = null;
+  let deliveryLng = null;
 
-  // Открытие карты
   function openMap() {
-    if (typeof ymaps === 'undefined') {
-      alert("API Яндекс.Карт ещё не загружен.");
-      return;
-    }
+    const map = L.map('map').setView([47.2121, 39.7215], 13); // Завод "Монолит-Дон", Батайск
 
-    ymaps.ready(function () {
-      const map = new ymaps.Map('map', {
-        center: [47.2121, 39.7215], // Завод "Монолит-Дон", Батайск
-        zoom: 13,
-        controls: ['zoomControl']
-      });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
 
-      // Маркер завода
-      const factoryMarker = new ymaps.Placemark([47.2121, 39.7215], {
-        balloonContent: 'Завод'
-      });
-      map.geoObjects.add(factoryMarker);
+    // Маркер завода
+    L.marker([47.2121, 39.7215]).addTo(map)
+      .bindPopup('Завод')
+      .openPopup();
 
-      // Поиск адреса
-      const searchControl = new ymaps.control.SearchControl({
-        options: {
-          noPlacemark: true,
-          provider: 'yandex#search'
-        }
-      });
-      map.controls.add(searchControl);
+    // Поле ввода адреса
+    const searchBox = document.createElement('input');
+    searchBox.type = 'text';
+    searchBox.placeholder = 'Введите адрес доставки...';
+    searchBox.style.width = '100%';
+    searchBox.style.marginTop = '10px';
 
-      // Обработчик выбора адреса
-      searchControl.events.add('resultselect', function (e) {
-        const index = e.get('index');
-        const result = searchControl.getResults(index)[0];
-        const coords = result.geometry.getCoordinates();
+    document.body.appendChild(searchBox);
 
-        deliveryPoint = coords;
+    searchBox.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const address = this.value.trim();
+        if (!address) return;
 
-        // Добавляем маркер точки доставки
-        const deliveryMarker = new ymaps.Placemark(coords, {
-          balloonContent: 'Точка доставки'
-        });
-        map.geoObjects.add(deliveryMarker);
-
-        calculate();
-      });
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.length > 0) {
+              const lat = parseFloat(data[0].lat);
+              const lon = parseFloat(data[0].lon);
+              map.setView([lat, lon], 14);
+              L.marker([lat, lon]).addTo(map).bindPopup('Адрес доставки');
+              deliveryLat = lat;
+              deliveryLng = lon;
+              calculate();
+            } else {
+              alert('Адрес не найден.');
+            }
+          });
+      }
     });
   }
 
@@ -168,11 +168,11 @@
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
 
-    if (!isNaN(mark) && !isNaN(volume) && deliveryPoint) {
+    if (!isNaN(mark) && !isNaN(volume) && deliveryLat && deliveryLng) {
       const baseCost = mark * volume;
       const factoryLat = 47.2121;
       const factoryLng = 39.7215;
-      const distance = getDistance(factoryLat, factoryLng, deliveryPoint[0], deliveryPoint[1]);
+      const distance = getDistance(factoryLat, factoryLng, deliveryLat, deliveryLng);
 
       let deliveryCost = 0;
       if (distance <= 5) {
@@ -196,4 +196,3 @@
 </script>
 </body>
 </html>
-
