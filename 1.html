@@ -129,7 +129,7 @@
         const address = this.value.trim();
         if (!address) return;
 
-        fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))}`)
+        fetch(`https://api.proxysite.net/get?url=${encodeURIComponent('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))}`)
           .then(res => res.json())
           .then(data => {
             try {
