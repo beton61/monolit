@@ -72,7 +72,7 @@
 <body>
 
 <div class="container">
-  <h2>Калькулятор сти доставки</h2>
+  <h2>Калр стоимости доставки</h2>
 
   <label for="mark">Выберите марку:</label>
   <select id="mark">
@@ -149,11 +149,14 @@
       // Расчёт расстояния между заводом и адресом (по прямой)
       const distanceKm = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
 
+      // Добавляем 3.5 км для учёта реального маршрута
+      const adjustedDistance = distanceKm + 3.5;
+
       let baseCost = mark * volume;
       let deliveryCost = 0;
 
       // Правило 1: объём ≤ 6 м³ и расстояние ≤ 5 км → 3000 ₽
-      if (volume <= 6 && distanceKm <= 5) {
+      if (adjustedDistance <= 5 && volume <= 6) {
         deliveryCost = 3000;
       }
       // Правило 2: объём > 6 м³ → 600 × объем
@@ -162,8 +165,8 @@
       }
 
       // Правило 3: расстояние > 5 км → 3000 + 150 × (расстояние - 5)
-      if (distanceKm > 5) {
-        deliveryCost = 3000 + 150 * (distanceKm - 5);
+      if (adjustedDistance > 5) {
+        deliveryCost = 3000 + 150 * (adjustedDistance - 5);
       }
 
       const total = baseCost + deliveryCost;
@@ -172,7 +175,7 @@
         Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
         Стоимость доставки: ${deliveryCost} ₽<br>
         Общая стоимость: ${total.toFixed(2)} ₽<br>
-        Расстояние: ${distanceKm.toFixed(2)} км
+        Расстояние: ${adjustedDistance.toFixed(2)} км
       `;
     } else {
       document.getElementById('result').textContent = "Введите корректные значения.";
