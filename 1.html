@@ -72,7 +72,7 @@
 <body>
 
 <div class="container">
-  <h2>Калр стоимости доставки</h2>
+  <h2>Калькулятор стоти доставки</h2>
 
   <label for="mark">Выберите марку:</label>
   <select id="mark">
@@ -138,7 +138,7 @@
     });
   }
 
-  // Расчёт стоимости с учётом новых правил
+  // Расчёт стоимости с учётом двух сценариев и округления в большую сторону
   function calculate() {
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
@@ -155,18 +155,22 @@
       let baseCost = mark * volume;
       let deliveryCost = 0;
 
-      // Правило 1: объём ≤ 6 м³ и расстояние ≤ 5 км → 3000 ₽
-      if (adjustedDistance <= 5 && volume <= 6) {
-        deliveryCost = 3000;
+      // Сценарий 1: объём ≤ 6 м³
+      if (volume <= 6) {
+        if (adjustedDistance <= 5) {
+          deliveryCost = Math.ceil(3000); // округление в большую сторону
+        } else {
+          deliveryCost = Math.ceil(3000 + 150 * (adjustedDistance - 5));
+        }
       }
-      // Правило 2: объём > 6 м³ → 600 × объем
-      else if (volume > 6) {
-        deliveryCost = 600 * volume;
-      }
-
-      // Правило 3: расстояние > 5 км → 3000 + 150 × (расстояние - 5)
-      if (adjustedDistance > 5) {
-        deliveryCost = 3000 + 150 * (adjustedDistance - 5);
+      // Сценарий 2: объём > 6 м³
+      else {
+        const baseDeliveryCost = 600 * volume;
+        if (adjustedDistance <= 5) {
+          deliveryCost = Math.ceil(baseDeliveryCost);
+        } else {
+          deliveryCost = Math.ceil(baseDeliveryCost + 150 * (adjustedDistance - 5));
+        }
       }
 
       const total = baseCost + deliveryCost;
