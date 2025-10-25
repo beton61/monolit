@@ -67,12 +67,12 @@
     }
   </style>
   <!-- Яндекс.Карты API -->
-  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9&load=package.full"></script>
 </head>
 <body>
 
 <div class="container">
-  <h2>Калькулятор стоимости дости</h2>
+  <h2>Калькулятор ст доставки</h2>
 
   <label for="mark">Выберите марку:</label>
   <select id="mark">
@@ -101,9 +101,10 @@
 <script>
   let map = null;
   let deliveryPoint = null;
+  let route = null;
 
   // Координаты завода
-  const factoryCoords = [47.129696, 39.716890]; // Батайск
+  const factoryCoords = [47.2121, 39.7215]; // Батайск
 
   // Инициализация карты
   ymaps.ready(init);
@@ -134,52 +135,64 @@
       });
       map.geoObjects.add(deliveryPoint);
 
-      calculateDistanceAndCost(coords);
+      calculate();
     });
   }
 
-  // Расчёт расстояния и стоимости
-  function calculateDistanceAndCost(deliveryCoords) {
-    const distance = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
+  // Расчёт стоимости с учётом реального маршрута
+  function calculate() {
     const mark = parseFloat(document.getElementById('mark').value);
     const volume = parseFloat(document.getElementById('volume').value);
 
-    if (!isNaN(mark) && !isNaN(volume)) {
-      const baseCost = mark * volume;
-      let deliveryCost = 0;
+    if (!isNaN(mark) && !isNaN(volume) && deliveryPoint) {
+      const deliveryCoords = deliveryPoint.geometry._coordinates;
 
-      if (distance <= 5) {
-        deliveryCost = 3000;
-      } else {
-        deliveryCost = 3000 + (distance - 5) * 500;
+      if (route) {
+        map.geoObjects.remove(route);
       }
 
-      const total = baseCost + deliveryCost;
+      // Создаём маршрут
+      const router = new ymaps.router.RoutingModel(
+        [factoryCoords, deliveryCoords],
+        {
+          results: 1,
+          mapStateAutoApply: true
+        }
+      );
 
-      document.getElementById('result').innerHTML = `
-        Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
-        Стоимость доставки: ${deliveryCost} ₽<br>
-        Общая стоимость: ${total.toFixed(2)} ₽<br>
-        Расстояние: ${distance.toFixed(2)} км
-      `;
+      router.route(function (err, res) {
+        if (err) {
+          console.error("Ошибка маршрута:", err);
+          alert("Не удалось рассчитать маршрут.");
+          return;
+        }
+
+        const distanceKm = res[0].properties.get('distance') / 1000;
+
+        let deliveryCost = 0;
+        if (distanceKm <= 5) {
+          deliveryCost = 3000;
+        } else {
+          deliveryCost = 3000 + (distanceKm - 5) * 500;
+        }
+
+        const baseCost = mark * volume;
+        const total = baseCost + deliveryCost;
+
+        document.getElementById('result').innerHTML = `
+          Стоимость бетона: ${baseCost.toFixed(2)} ₽<br>
+          Стоимость доставки: ${deliveryCost} ₽<br>
+          Общая стоимость: ${total.toFixed(2)} ₽<br>
+          Расстояние: ${distanceKm.toFixed(2)} км
+        `;
+
+        route = res[0];
+        map.geoObjects.add(route);
+      });
     } else {
       document.getElementById('result').textContent = "Введите корректные значения.";
     }
   }
-
-  // Функция расчёта расстояния между двумя точками
-  function getDistanceBetweenPoints(p1, p2) {
-    const R = 6371;
-    const dLat = (p2[0] - p1[0]) * Math.PI / 180;
-    const dLon = (p2[1] - p1[1]) * Math.PI / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(p1[0] * Math.PI / 180) * Math.cos(p2[0] * Math.PI / 180) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
 </script>
 </body>
 </html>
-
