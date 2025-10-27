@@ -2,21 +2,18 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 import logging
-from aiogram.dispatcher.webhook import WebhookInfo
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from fastapi import FastAPI, Request
-from aiogram.webhook.aiohttp_server import setup_webhook
-from aiogram.utils.executor import start_webhook
+import uvicorn
 import os
+import asyncio
 
 # Включаем логирование
 logging.basicConfig(level=logging.INFO)
 
 # Настройки бота
-API_TOKEN = '8336508035:AAFZwR-T7G8yMvNXIDXI4-mQagfAboLC7FA'
-ADMIN_ID = 954073474  # ❗️Замени на ID телеграм-пользователя @Olegzov13
+API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Токен из переменной окружения
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot, storage=MemoryStorage())
+dp = Dispatcher(bot)
 
 # Основная клавиатура
 def get_main_keyboard():
@@ -55,24 +52,31 @@ async def start(message):
 async def beton(callback):
     text = (
         "📦 Бетон:\n\n"
+
         "🔹 B7.5 (M100)\n"
         "▫️ Назначение: Подбетонка, подготовительные работы\n"
         "▫️ Цена: от 3 200 ₽/куб.м\n\n"
+
         "🔹 B10 (M150)\n"
         "▫️ Назначение: Подушки под фундаменты\n"
         "▫️ Цена: от 3 400 ₽/куб.м\n\n"
+
         "🔹 B15 (M200)\n"
         "▫️ Назначение: Ленточные фундаменты, дорожные покрытия\n"
         "▫️ Цена: от 3 900 ₽/куб.м\n\n"
+
         "🔹 B20 (M250)\n"
         "▫️ Назначение: Монолитные плиты перекрытия, мелкозаглубленные фундаменты\n"
         "▫️ Цена: от 4 200 ₽/куб.м\n\n"
+
         "🔹 B25 (M350)\n"
         "▫️ Назначение: Крупногабаритные конструкции, колонны\n"
         "▫️ Цена: от 4 700 ₽/куб.м\n\n"
+
         "🔹 B30 (M400)\n"
         "▫️ Назначение: Строительство высотных зданий, мостов\n"
         "▫️ Цена: от 5 100 ₽/куб.м\n\n"
+
         "Чтобы рассчитать точную стоимость — воспользуйтесь кнопкой \"Рассчитать стоимость\"."
     )
     await callback.message.edit_text(text=text, reply_markup=get_main_keyboard())
@@ -83,18 +87,23 @@ async def beton(callback):
 async def fbcs(callback):
     text = (
         "📦 Блоки ФБС:\n\n"
+
         "🔹 590х290х188 мм\n"
         "▫️ Назначение: Устройство фундаментов, стен подвалов\n"
         "▫️ Цена: от 1 200 ₽/шт\n\n"
+
         "🔹 590х290х140 мм\n"
         "▫️ Назначение: Фундаменты малоэтажных домов\n"
         "▫️ Цена: от 1 100 ₽/шт\n\n"
+
         "🔹 590х290х288 мм\n"
         "▫️ Назначение: Конструкции с повышенной прочностью\n"
         "▫️ Цена: от 1 400 ₽/шт\n\n"
+
         "🔹 390х290х188 мм\n"
         "▫️ Назначение: Устройство внутренних перегородок\n"
         "▫️ Цена: от 950 ₽/шт\n\n"
+
         "Для расчёта стоимости — воспользуйтесь кнопкой \"Рассчитать стоимость\"."
     )
     await callback.message.edit_text(text=text, reply_markup=get_main_keyboard())
@@ -105,15 +114,19 @@ async def fbcs(callback):
 async def spheres(callback):
     text = (
         "🌊 Парковочные полусферы:\n\n"
+
         "🔹 60 см\n"
         "▫️ Назначение: Декоративные элементы на парковках\n"
         "▫️ Цена: от 2 500 ₽/шт\n\n"
+
         "🔹 80 см\n"
         "▫️ Назначение: Зонирование парковок, оформление дорог\n"
         "▫️ Цена: от 3 200 ₽/шт\n\n"
+
         "🔹 1 м\n"
         "▫️ Назначение: Оформление центральных элементов, фонтанов\n"
         "▫️ Цена: от 4 500 ₽/шт\n\n"
+
         "Можно использовать как отдельные элементы, так и комплекты.\n"
         "Для расчёта стоимости — воспользуйтесь кнопкой \"Рассчитать стоимость\"."
     )
@@ -161,6 +174,18 @@ async def handle_webhook(request: Request):
 # Устанавливаем вебхук
 WEBHOOK_PATH = "/webhook"
 
-if __name__ == '__main__':
-    import uvicorn
+# Установка вебхука
+async def set_webhook():
+    webhook_url = f"https://{os.getenv('RENDER_EXTERNAL_URL')}{WEBHOOK_PATH}"
+    await bot.set_webhook(webhook_url)
+    print(f"✅ Webhook установлен: {webhook_url}")
+
+# Удаление вебхука
+async def delete_webhook():
+    await bot.delete_webhook()
+    print("❌ Webhook удалён")
+
+if __name__ == "__main__":
+    # Установим вебхук перед запуском
+    asyncio.run(set_webhook())
     uvicorn.run(app, host="0.0.0.0", port=8000)
