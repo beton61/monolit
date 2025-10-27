@@ -3,3 +3,6 @@ aiohttp
 pydantic
 magic-filter
 typing-extensions
+fastapi
+uvicorn
+aiogram
