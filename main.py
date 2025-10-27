@@ -12,8 +12,10 @@ logging.basicConfig(level=logging.INFO)
 
 # Настройки бота
 API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Токен из переменной окружения
+ADMIN_ID = 954073474  # ❗️Замени на свой Telegram ID
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()
+dp.bot = bot  # Привязываем бота к диспетчеру
 
 # Основная клавиатура
 def get_main_keyboard():
@@ -168,7 +170,7 @@ app = FastAPI()
 @app.post("/webhook")
 async def handle_webhook(request: Request):
     update = await request.json()
-    await dp.process_update(update)
+    await dp.feed_update(bot, update)
     return {"status": "ok"}
 
 # Устанавливаем вебхук
