@@ -242,13 +242,13 @@
       const distanceKm = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
 
       // Добавляем 3.5 км для учёта реального маршрута
-      const adjustedDistance = distanceKm + 3.5;
+      const adjustedDistance = distanceKm + 4.5;
 
       let baseCost = mark * volume;
       let deliveryCost = 0;
 
       // Сценарий 1: объём ≤ 6 м³
-      if (volume <= 6) {
+      if (volume <= 5) {
         if (adjustedDistance <= 5) {
           deliveryCost = Math.ceil(3000); // округление в большую сторону
         } else {
@@ -261,7 +261,7 @@
         if (adjustedDistance <= 5) {
           deliveryCost = Math.ceil(baseDeliveryCost);
         } else {
-          deliveryCost = Math.ceil(baseDeliveryCost + 150 * (adjustedDistance - 5));
+          deliveryCost = Math.ceil(baseDeliveryCost + 190 * (adjustedDistance - 5));
         }
       }
 
@@ -294,3 +294,4 @@
 </script>
 </body>
 </html>
+
