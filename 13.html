@@ -313,11 +313,14 @@
       <label for="deliveryAddress"><i class="fas fa-map-pin"></i> Адрес доставки</label>
       <input type="text" id="deliveryAddress" placeholder="Подтянется автоматически" readonly />
 
-      <!-- Расчёт стоимости ВНУТРИ формы, между адресом и комментарием -->
+      <!-- Расчёт стоимости ВНУТРИ формы -->
       <div class="cost-details" id="costDetails" style="display: none;">
         <b>🧱 Бетон:</b> <span id="costBase">0 ₽</span><br>
         <b>🚚 Доставка:</b> <span id="costDelivery">0 ₽</span><br>
         <b>💰 Итого:</b> <span id="costTotal">0 ₽</span>
+        <div id="deliveryWarning" style="margin-top: 8px; font-size: 0.85rem; color: #e74c3c; display: none;">
+          ⚠️ Внимание! Стоимость доставки за пределами г. Батайск может отличаться. Точную стоимость уточняйте у оператора.
+        </div>
       </div>
 
       <label for="comment"><i class="fas fa-comment"></i> Комментарий</label>
@@ -479,11 +482,15 @@
 
       const total = baseCost + deliveryCost;
 
-      // Обновляем стоимость внутри формы
+      // Обновляем стоимость
       document.getElementById('costBase').textContent = baseCost.toFixed(2) + ' ₽';
       document.getElementById('costDelivery').textContent = deliveryCost + ' ₽';
       document.getElementById('costTotal').textContent = total.toFixed(2) + ' ₽';
       document.getElementById('costDetails').style.display = 'block';
+
+      // Показываем предупреждение, если доставка дальше 10 км от завода
+      const showWarning = distanceKm > 10;
+      document.getElementById('deliveryWarning').style.display = showWarning ? 'block' : 'none';
 
       showOrderForm();
     } else {
@@ -497,7 +504,6 @@
     const form = document.getElementById('orderForm');
     form.style.display = 'block';
 
-    // Если адрес ещё не заполнен — подтягиваем
     if (deliveryPoint && !document.getElementById('deliveryAddress').value) {
       const addr = deliveryPoint.properties.get('balloonContent');
       if (addr && !addr.includes('Определение') && !addr.includes('Ошибка')) {
@@ -541,8 +547,15 @@
       + `\n💰 Стоимость:\n`
       + `Бетон: ${baseCost}\n`
       + `Доставка: ${deliveryCost}\n`
-      + `Итого: ${totalCost}\n\n`
-      + `Спасибо!`;
+      + `Итого: ${totalCost}\n\n`;
+
+    // Добавляем предупреждение, если было видно
+    const warningVisible = document.getElementById('deliveryWarning').style.display === 'block';
+    if (warningVisible) {
+      message += `⚠️ Внимание! Стоимость доставки за пределами г. Батайск может отличаться. Уточняйте у оператора.\n\n`;
+    }
+
+    message += `Спасибо!`;
 
     const encodedMessage = encodeURIComponent(message);
     let url = '';
