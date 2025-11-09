@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>БетонМастер — Калькулятор и прайс</title>
+  <title>Монолит Дон — Бетон и ЖБИ</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.2.2/imask.min.js"></script>
@@ -22,7 +22,7 @@
     }
 
     header {
-      background: linear-gradient(135deg, #2980b9, #1a5276);
+      background: linear-gradient(135deg, #2c3e50, #1a2530);
       color: white;
       padding: 24px 15px;
       text-align: center;
@@ -30,24 +30,24 @@
     }
 
     .logo {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       background: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .logo i {
-      font-size: 28px;
+      font-size: 32px;
       color: #2980b9;
     }
 
     header h1 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 600;
       margin: 0;
     }
@@ -192,27 +192,62 @@
       color: #1a5276;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
       margin: 12px 0;
-      font-size: 0.95rem;
     }
 
-    table th, table td {
-      padding: 10px;
-      border: 1px solid #ddd;
-      text-align: center;
+    .product-card {
+      border: 1px solid #eee;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    table th {
-      background-color: #f1f5f9;
+    .product-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      background-color: #f1f1f1;
+    }
+
+    .product-info {
+      padding: 12px;
+    }
+
+    .product-info h3 {
+      font-size: 1rem;
+      margin: 0 0 6px;
       color: #2c3e50;
-      font-weight: 600;
     }
 
-    table tr:nth-child(even) {
-      background-color: #f8f9fc;
+    .product-info p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 4px 0;
+    }
+
+    .price {
+      font-weight: 600;
+      color: #1a5276;
+      margin: 6px 0;
+    }
+
+    .btn-order {
+      width: 100%;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .btn-order:hover {
+      background-color: #27ae60;
     }
 
     .note {
@@ -269,30 +304,10 @@
     }
 
     @media (max-width: 480px) {
-      header h1 {
-        font-size: 1.4rem;
-      }
-
       .bottom-bar a {
         font-size: 0.85rem;
         padding: 10px;
       }
-
-      input, button {
-        font-size: 1rem;
-      }
-
-      table, table th, table td {
-        font-size: 0.85rem;
-        padding: 6px;
-      }
-    }
-
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus {
-      -webkit-box-shadow: 0 0 0 30px white inset !important;
-      -webkit-text-fill-color: #333 !important;
     }
   </style>
   <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
@@ -301,10 +316,10 @@
 
 <header>
   <div class="logo">
-    <i class="fas fa-hard-hat"></i>
+    <i class="fas fa-building"></i>
   </div>
-  <h1>БетонМастер</h1>
-  <p>Доставка бетона и изделия из железобетона</p>
+  <h1>Монолит Дон</h1>
+  <p>Бетон и железобетонные изделия — Ростовская область</p>
 </header>
 
 <div class="container">
@@ -363,7 +378,7 @@
         <b>🚚 Доставка:</b> <span id="costDelivery">0 ₽</span><br>
         <b>💰 Итого:</b> <span id="costTotal">0 ₽</span>
         <div id="deliveryWarning" style="margin-top: 8px; font-size: 0.85rem; color: #e74c3c; display: none;">
-          ⚠️ Внимание! Стоимость доставки за пределами г. Батайск может отличаться. Точную стоимость уточняйте у оператора.
+          ⚠️ Внимание! Стоимость доставки за пределами г. Батайск может отличаться. Уточняйте у оператора.
         </div>
       </div>
 
@@ -381,150 +396,122 @@
     </div>
   </section>
 
-  <!-- === ПРАЙС НА ФБС === -->
+  <!-- === ФБС 3 и 4 === -->
   <section class="block">
-    <h2><i class="fas fa-cubes"></i> Прайс на ФБС (блоки фундаментные)</h2>
-    <p>Соответствие ГОСТ 13579-78. Размеры указаны в миллиметрах.</p>
+    <h2><i class="fas fa-cubes"></i> Блоки ФБС</h2>
+    <p>Фундаментные блоки — ФБС 3 и ФБС 4. Соответствуют ГОСТ 13579-78.</p>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+        </div>
+        <div class="product-info">
+          <h3>ФБС 3-3-6</h3>
+          <p>2.98 × 0.3 × 0.58 м</p>
+          <p>0.52 м³ | 1.3 т</p>
+          <p class="price">3 200 ₽</p>
+          <button class="btn-order" onclick="orderFBS('ФБС 3-3-6', '2.98×0.3×0.58 м', 3200)">
+            Заказать
+          </button>
+        </div>
+      </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Марка</th>
-          <th>Длина × Ширина × Высота, мм</th>
-          <th>Объём, м³</th>
-          <th>Масса, т</th>
-          <th>Цена, ₽</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>ФБС 6-3-6</td>
-          <td>5940 × 300 × 580</td>
-          <td>1.03</td>
-          <td>2.58</td>
-          <td>5 800</td>
-        </tr>
-        <tr>
-          <td>ФБС 5-3-6</td>
-          <td>4980 × 300 × 580</td>
-          <td>0.87</td>
-          <td>2.18</td>
-          <td>4 900</td>
-        </tr>
-        <tr>
-          <td>ФБС 4-3-6</td>
-          <td>3980 × 300 × 580</td>
-          <td>0.69</td>
-          <td>1.73</td>
-          <td>3 800</td>
-        </tr>
-        <tr>
-          <td>ФБС 3-3-6</td>
-          <td>2980 × 300 × 580</td>
-          <td>0.52</td>
-          <td>1.30</td>
-          <td>3 200</td>
-        </tr>
-        <tr>
-          <td>ФБС 2-3-6</td>
-          <td>1980 × 300 × 580</td>
-          <td>0.35</td>
-          <td>0.88</td>
-          <td>2 700</td>
-        </tr>
-        <tr>
-          <td>ФБС 2-4-6</td>
-          <td>1980 × 400 × 580</td>
-          <td>0.46</td>
-          <td>1.15</td>
-          <td>3 000</td>
-        </tr>
-        <tr>
-          <td>ФБС 2-5-6</td>
-          <td>1980 × 500 × 580</td>
-          <td>0.58</td>
-          <td>1.45</td>
-          <td>3 300</td>
-        </tr>
-        <tr>
-          <td>ФБС 1-3-6</td>
-          <td>980 × 300 × 580</td>
-          <td>0.17</td>
-          <td>0.43</td>
-          <td>2 200</td>
-        </tr>
-        <tr>
-          <td>ФБС 1-4-6</td>
-          <td>980 × 400 × 580</td>
-          <td>0.23</td>
-          <td>0.58</td>
-          <td>2 400</td>
-        </tr>
-        <tr>
-          <td>ФБС 1-5-6</td>
-          <td>980 × 500 × 580</td>
-          <td>0.29</td>
-          <td>0.73</td>
-          <td>2 700</td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="product-card">
+        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+        </div>
+        <div class="product-info">
+          <h3>ФБС 3-4-6</h3>
+          <p>2.98 × 0.4 × 0.58 м</p>
+          <p>0.69 м³ | 1.73 т</p>
+          <p class="price">3 800 ₽</p>
+          <button class="btn-order" onclick="orderFBS('ФБС 3-4-6', '2.98×0.4×0.58 м', 3800)">
+            Заказать
+          </button>
+        </div>
+      </div>
 
-    <div class="note">
-      * Цены указаны за 1 штуку. Объём и масса — приблизительные. Доставка рассчитывается отдельно.
+      <div class="product-card">
+        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+        </div>
+        <div class="product-info">
+          <h3>ФБС 4-3-6</h3>
+          <p>3.98 × 0.3 × 0.58 м</p>
+          <p>0.69 м³ | 1.73 т</p>
+          <p class="price">3 800 ₽</p>
+          <button class="btn-order" onclick="orderFBS('ФБС 4-3-6', '3.98×0.3×0.58 м', 3800)">
+            Заказать
+          </button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+        </div>
+        <div class="product-info">
+          <h3>ФБС 4-4-6</h3>
+          <p>3.98 × 0.4 × 0.58 м</p>
+          <p>0.93 м³ | 2.33 т</p>
+          <p class="price">4 500 ₽</p>
+          <button class="btn-order" onclick="orderFBS('ФБС 4-4-6', '3.98×0.4×0.58 м', 4500)">
+            Заказать
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- === ПРАЙС НА ПОЛУСФЕРЫ === -->
+  <!-- === ПАРКОВОЧНЫЕ ПОЛУСФЕРЫ === -->
   <section class="block">
-    <h2><i class="fas fa-circle-half-stroke"></i> Бетонные полусферы</h2>
+    <h2><i class="fas fa-circle-half-stroke"></i> Парковочные полусферы</h2>
+    <p>Армированный бетон. Диаметр 25 см, высота 50 см, вес 70 кг.</p>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img" style="background: url('https://via.placeholder.com/300x160?text=Полусфера+без+столба') no-repeat center/cover;">
+        </div>
+        <div class="product-info">
+          <h3>Полусфера (без столба)</h3>
+          <p>Ø25 см × 50 см</p>
+          <p>Вес: 70 кг</p>
+          <p class="price">4 200 ₽</p>
+          <button class="btn-order" onclick="orderSphere('Полусфера без столба', 4200)">
+            Заказать
+          </button>
+        </div>
+      </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Тип</th>
-          <th>Описание</th>
-          <th>Высота, м</th>
-          <th>Диаметр, м</th>
-          <th>Вес, т</th>
-          <th>Цена, ₽</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Полусфера</td>
-          <td>Без опоры</td>
-          <td>0.8</td>
-          <td>1.4</td>
-          <td>0.8</td>
-          <td>4 200</td>
-        </tr>
-        <tr>
-          <td>Полусфера + столб</td>
-          <td>С бетонным столбом (1.5 м)</td>
-          <td>2.3</td>
-          <td>1.4</td>
-          <td>1.6</td>
-          <td>5 500</td>
-        </tr>
-      </tbody>
-    </table>
-
+      <div class="product-card">
+        <div class="product-img" style="background: url('https://via.placeholder.com/300x160?text=Полусфера+со+столбом') no-repeat center/cover;">
+        </div>
+        <div class="product-info">
+          <h3>Полусфера + столб</h3>
+          <p>С опорой 1.5 м</p>
+          <p>Вес: 1.6 т</p>
+          <p class="price">5 500 ₽</p>
+          <button class="btn-order" onclick="orderSphere('Полусфера со столбом', 5500)">
+            Заказать
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="note">
-      * Столб — бетонный, с закладными. Цена указана за 1 штуку.
+      * Фото — для примера. Реальные изделия изготавливаются по ТУ.
     </div>
   </section>
 </div>
 
 <footer>
-  &copy; 2009–2024 БетонМастер. Все права защищены.
+  &copy; 2009–2024 Монолит Дон. Все права защищены.<br>
+  Telegram: <a href="https://t.me/Olegzov13" target="_blank" style="color: #0088cc;">@Olegzov13</a>
 </footer>
 
 <!-- Фиксированная нижняя панель -->
 <div class="bottom-bar">
   <a href="tel:+79110911311" class="call"><i class="fas fa-phone-alt"></i> Звонок</a>
   <a href="https://wa.me/79110911311" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-  <a href="https://t.me/Monolitdon" target="_blank" class="telegram"><i class="fab fa-telegram"></i> Telegram</a>
+  <a href="https://t.me/Olegzov13" target="_blank" class="telegram"><i class="fab fa-telegram"></i> Telegram</a>
 </div>
 
 <script>
@@ -542,11 +529,10 @@
     });
 
     const factoryMarker = new ymaps.Placemark(factoryCoords, {
-      balloonContent: 'Завод "БетонМастер", Батайск'
+      balloonContent: 'Завод "Монолит Дон", Батайск'
     });
     map.geoObjects.add(factoryMarker);
 
-    // Обработчик клика по карте
     map.events.add('click', function(e) {
       const coords = e.get('coords');
       ymaps.geocode(coords).then(function(result) {
@@ -566,7 +552,7 @@
 
     let query = userInput;
     const lowerInput = userInput.toLowerCase();
-    const cities = ['ростов', 'батайск', 'азов'];
+    const cities = ['ростов', 'батайск', 'новошахтинск'];
     const hasCity = cities.some(city => lowerInput.includes(city));
 
     if (!hasCity) {
@@ -576,14 +562,14 @@
     ymaps.geocode(query).then(function(result) {
       const firstGeoObject = result.geoObjects.get(0);
       if (!firstGeoObject) {
-        alert('Адрес не найден. Уточните запрос.');
+        alert('Адрес не найден.');
         return;
       }
 
       const coords = firstGeoObject.geometry.getCoordinates();
       setDeliveryPoint(coords, query);
     }).catch(() => {
-      alert('Ошибка поиска адреса.');
+      alert('Ошибка поиска.');
     });
   }
 
@@ -604,7 +590,6 @@
       },
       (error) => {
         alert('Не удалось определить местоположение.');
-        console.error(error);
       }
     );
   }
@@ -670,7 +655,7 @@
 
       showOrderForm();
     } else {
-      alert('Введите объём и укажите точку доставки.');
+      alert('Введите объём и укажите точку.');
       document.getElementById('costDetails').style.display = 'none';
       document.getElementById('orderForm').style.display = 'none';
     }
@@ -738,13 +723,22 @@
     if (method === 'whatsapp') {
       url = `https://wa.me/79110911311?text=${encodedMessage}`;
     } else if (method === 'telegram') {
-      url = `https://t.me/Monolitdon?text=${encodedMessage}`;
+      url = `https://t.me/Olegzov13?text=${encodedMessage}`;
     }
 
     window.open(url, '_blank');
+  }
+
+  function orderFBS(name, size, price) {
+    const msg = `Здравствуйте! Хочу заказать:\n${name} (${size}) — ${price} ₽\n\nУточните, пожалуйста, наличие, доставку и оплату.`;
+    window.open(`https://wa.me/79110911311?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  function orderSphere(type, price) {
+    const msg = `Здравствуйте! Интересует:\n${type} — ${price} ₽\n\nПожалуйста, уточните наличие, доставку и условия.`;
+    window.open(`https://wa.me/79110911311?text=${encodeURIComponent(msg)}`, '_blank');
   }
 </script>
 
 </body>
 </html>
-
