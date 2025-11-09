@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Расчет стоимости бетона</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.2.2/imask.min.js"></script>
   <style>
     * {
@@ -15,28 +16,47 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f9f9f9;
+      background: #f8f9fc;
       color: #333;
       line-height: 1.6;
     }
 
     header {
-      background: linear-gradient(135deg, #3498db, #2c3e50);
+      background: linear-gradient(135deg, #2980b9, #1a5276);
       color: white;
-      padding: 20px 15px;
+      padding: 24px 15px;
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .logo i {
+      font-size: 28px;
+      color: #2980b9;
     }
 
     header h1 {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
+      font-weight: 600;
       margin: 0;
     }
 
     header p {
-      font-size: 0.95rem;
-      color: #f1f1f1;
-      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #d5d9e0;
+      margin-top: 6px;
     }
 
     .container {
@@ -46,14 +66,28 @@
     }
 
     section {
-      margin-bottom: 25px;
+      margin-bottom: 28px;
     }
 
     .block {
       background-color: white;
-      border-radius: 12px;
-      padding: 18px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 18px 0 12px;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2 i {
+      color: #3498db;
     }
 
     label {
@@ -61,16 +95,24 @@
       margin-top: 12px;
       font-size: 0.95rem;
       font-weight: 500;
+      color: #555;
     }
 
     input, select, textarea {
       width: 100%;
-      padding: 12px;
+      padding: 12px 14px;
       margin-top: 6px;
       border: 1px solid #ddd;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 1rem;
       background-color: #fdfdfd;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
     }
 
     button {
@@ -79,7 +121,7 @@
       background-color: #3498db;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 1rem;
       font-weight: 600;
@@ -99,61 +141,78 @@
       background-color: #219a52;
     }
 
+    button.geo {
+      background-color: #e67e22;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button.geo:hover {
+      background-color: #d35400;
+    }
+
     #map {
       height: 250px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
       margin-top: 15px;
+      border: 1px solid #e0e0e0;
     }
 
     .result {
-      margin-top: 15px;
-      padding: 14px;
-      background-color: #eef2f3;
-      border-left: 4px solid #3498db;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      line-height: 1.5;
+      margin-top: 18px;
+      padding: 16px;
+      background-color: #e8f4fc;
+      border-left: 5px solid #3498db;
+      border-radius: 10px;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: #2c3e50;
+    }
+
+    .result b {
+      color: #1a5276;
     }
 
     footer {
       text-align: center;
-      padding: 15px;
-      background-color: #eee;
-      margin-top: 30px;
+      padding: 18px;
+      background-color: #1a2530;
+      color: #aaa;
       font-size: 0.85rem;
-      color: #666;
     }
 
-    /* Фиксированная нижняя панель */
     .bottom-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: #2c3e50;
-      padding: 12px 10px;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+      background: #1a2530;
+      padding: 12px 8px;
+      box-shadow: 0 -4px 14px rgba(0,0,0,0.2);
       z-index: 1000;
       display: flex;
-      gap: 10px;
+      gap: 8px;
+      font-size: 0.9rem;
     }
 
-    .bottom-bar a, .bottom-bar button {
+    .bottom-bar a {
       flex: 1;
       display: block;
       color: white;
       text-decoration: none;
       padding: 12px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      border-radius: 10px;
       text-align: center;
+      font-weight: 600;
       white-space: nowrap;
     }
 
     .bottom-bar .call {
-      background: #1a2530;
+      background: #2c3e50;
     }
 
     .bottom-bar .whatsapp {
@@ -164,27 +223,21 @@
       background: #0088cc;
     }
 
-    /* Адаптация под мобильные */
     @media (max-width: 480px) {
       header h1 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
 
-      .bottom-bar a, .bottom-bar button {
-        font-size: 0.9rem;
+      .bottom-bar a {
+        font-size: 0.85rem;
         padding: 10px;
       }
 
       input, button {
         font-size: 1rem;
       }
-
-      .result {
-        font-size: 0.9rem;
-      }
     }
 
-    /* Скрытие автозаполнения */
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus {
@@ -197,84 +250,88 @@
 <body>
 
 <header>
-  <h1>Калькулятор бетона</h1>
-  <p>С доставкой по области</p>
+  <div class="logo">
+    <i class="fas fa-hard-hat"></i>
+  </div>
+  <h1>Монолит Дон</h1>
+  <p>Доставка бетона по Ростовской области</p>
 </header>
 
 <div class="container">
   <section class="block">
-    <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Где нужен бетон?</h2>
+    <!-- 1. Марка бетона -->
+    <label for="mark"><i class="fas fa-cube"></i> Марка бетона</label>
+    <select id="mark">
+      <option value="4800">М100 — 4 800 ₽/м³</option>
+      <option value="5000">М150 — 5 000 ₽/м³</option>
+      <option value="5200">М200 — 5 200 ₽/м³</option>
+      <option value="5600">М250 — 5 600 ₽/м³</option>
+      <option value="5800">М300 — 5 800 ₽/м³</option>
+      <option value="5900">М350 — 5 900 ₽/м³</option>
+      <option value="6500">М400 — 6 400 ₽/м³</option>
+      <option value="5200">Раствор М100 — 5 200 ₽/м³</option>
+      <option value="5400">Раствор М150 — 5 400 ₽/м³</option>
+    </select>
 
-    <!-- Поле поиска с подсказкой -->
-    <label for="addressInput">Адрес доставки</label>
+    <!-- 2. Объем -->
+    <label for="volume"><i class="fas fa-ruler-combined"></i> Объем (м³)</label>
+    <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
+
+    <!-- 3. Адрес доставки (сразу после объёма) -->
+    <h2><i class="fas fa-map-marker-alt"></i> Адрес доставки</h2>
+    <label for="addressInput">Улица, дом</label>
     <input 
       type="text" 
       id="addressInput" 
-      placeholder="Улица, дом (например: Ленина, 10)" 
+      placeholder="Ленина, 10" 
       onkeydown="if(event.key==='Enter') findAddress()"
     />
-    <button onclick="findAddress()">🔍 Найти на карте</button>
+    <button onclick="findAddress()"><i class="fas fa-search"></i> Найти на карте</button>
+    <button onclick="findMyLocation()" class="geo"><i class="fas fa-location-dot"></i> Найти меня</button>
 
-    <!-- Калькулятор -->
-    <div class="calculator">
-      <label for="mark">Марка бетона</label>
-      <select id="mark">
-        <option value="4800">М100 — 4 800 ₽/м³</option>
-        <option value="5000">М150 — 5 000 ₽/м³</option>
-        <option value="5200">М200 — 5 200 ₽/м³</option>
-        <option value="5600">М250 — 5 600 ₽/м³</option>
-        <option value="5800">М300 — 5 800 ₽/м³</option>
-        <option value="5900">М350 — 5 900 ₽/м³</option>
-        <option value="6500">М400 — 6 400 ₽/м³</option>
-        <option value="5200">Раствор М100 — 5 200 ₽/м³</option>
-        <option value="5400">Раствор М150 — 5 400 ₽/м³</option>
-      </select>
+    <!-- 4. Кнопка расчёта -->
+    <button onclick="calculate()"><i class="fas fa-calculator"></i> Рассчитать стоимость</button>
 
-      <label for="volume">Объем (м³)</label>
-      <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
-
-      <button onclick="calculate()">Рассчитать стоимость</button>
-
-      <div class="result" id="result"></div>
-    </div>
-
-    <!-- Карта -->
+    <!-- 5. Карта -->
     <div class="map-container">
       <div id="map"></div>
     </div>
 
-    <!-- Форма заказа -->
-    <div id="orderForm" style="display: none; margin-top: 20px; padding: 16px; background-color: #f8f9fa; border-radius: 10px;">
-      <h3 style="font-size: 1.2rem; margin-bottom: 12px;">Оформить заказ</h3>
-      <label for="clientName">Ваше имя</label>
+    <!-- 6. Итоговая стоимость -->
+    <div class="result" id="result" style="display: none;"></div>
+
+    <!-- 7. Форма заказа -->
+    <div id="orderForm" style="display: none; margin-top: 20px; padding: 16px; background-color: #f8f9fa; border-radius: 12px;">
+      <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: #2c3e50;"><i class="fas fa-shopping-cart"></i> Оформить заказ</h3>
+      <label for="clientName"><i class="fas fa-user"></i> Ваше имя</label>
       <input type="text" id="clientName" placeholder="Иван Иванов" required />
 
-      <label for="clientPhone">Телефон</label>
+      <label for="clientPhone"><i class="fas fa-phone"></i> Телефон</label>
       <input type="tel" id="clientPhone" placeholder="+7 (999) 123-45-67" required />
 
-      <label for="deliveryAddress">Адрес доставки</label>
-      <input type="text" id="deliveryAddress" placeholder="Адрес подтянется автоматически (можно редактировать)" />
+      <label for="deliveryAddress"><i class="fas fa-map-pin"></i> Адрес доставки</label>
+      <input type="text" id="deliveryAddress" placeholder="Подтянется автоматически" />
 
-      <label for="comment">Комментарий (опционально)</label>
-      <textarea id="comment" rows="3" placeholder="Подъезд, звонок за час, и т.д."></textarea>
+      <label for="comment"><i class="fas fa-comment"></i> Комментарий</label>
+      <textarea id="comment" rows="3" placeholder="Подъезд с торца, звонок за час..."></textarea>
 
       <div style="display: flex; gap: 10px; margin-top: 12px;">
-        <button onclick="submitOrder('whatsapp')" class="success" style="flex: 1;">💬 WhatsApp</button>
-        <button onclick="submitOrder('telegram')" class="success" style="flex: 1; background-color: #0088cc;">✈️ Telegram</button>
+        <button onclick="submitOrder('whatsapp')" class="success" style="flex: 1;"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+        <button onclick="submitOrder('telegram')" class="success" style="flex: 1; background-color: #0088cc;"><i class="fab fa-telegram"></i> Telegram</button>
       </div>
     </div>
   </section>
 </div>
 
 <footer>
-  &copy; 2009 Бетонный завод "Монолит"
+  &copy; 2009–2024 БетонМастер. Все права защищены.
 </footer>
 
 <!-- Фиксированная нижняя панель -->
 <div class="bottom-bar">
-  <a href="tel:+79110911311" class="call">📞 Звонок</a>
-  <a href="https://wa.me/79110911311" target="_blank" class="whatsapp">💬 WhatsApp</a>
-  <a href="https://t.me/monolitbeton" target="_blank" class="telegram">✈️ Telegram</a>
+  <a href="tel:+79110911311" class="call"><i class="fas fa-phone-alt"></i> Звонок</a>
+  <a href="https://wa.me/79110911311" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+  <a href="https://t.me/betonmaster" target="_blank" class="telegram"><i class="fab fa-telegram"></i> Telegram</a>
 </div>
 
 <script>
@@ -292,7 +349,7 @@
     });
 
     const factoryMarker = new ymaps.Placemark(factoryCoords, {
-      balloonContent: 'Завод "Монолит", Батайск'
+      balloonContent: 'Завод "БетонМастер", Батайск'
     });
     map.geoObjects.add(factoryMarker);
   }
@@ -304,42 +361,64 @@
       return;
     }
 
-    // Автоматически добавляем ", Батайск", если город не указан
     let query = userInput;
     const lowerInput = userInput.toLowerCase();
-    if (!lowerInput.includes('батайск') && 
-        !lowerInput.includes('ростов') && 
-        !lowerInput.includes('новошахтинск') && 
-        !lowerInput.includes('москва') && 
-        !lowerInput.includes('спб') && 
-        !lowerInput.includes('сочи') && 
-        !lowerInput.includes('воронеж')) {
+    const cities = ['ростов', 'батайск', 'новошахтинск', 'москва', 'спб', 'сочи', 'воронеж', 'краснодар', 'таганрог'];
+    const hasCity = cities.some(city => lowerInput.includes(city));
+
+    if (!hasCity) {
       query = `${userInput}, Батайск`;
     }
 
     ymaps.geocode(query).then(function(result) {
       const firstGeoObject = result.geoObjects.get(0);
       if (!firstGeoObject) {
-        alert('Адрес не найден. Попробуйте уточнить запрос.');
+        alert('Адрес не найден. Уточните запрос.');
         return;
       }
 
       const coords = firstGeoObject.geometry.getCoordinates();
-
-      if (deliveryPoint) {
-        map.geoObjects.remove(deliveryPoint);
-      }
-
-      deliveryPoint = new ymaps.Placemark(coords, {
-        balloonContent: query
-      });
-      map.geoObjects.add(deliveryPoint);
-
-      map.setCenter(coords, 15);
-      calculate();
+      setDeliveryPoint(coords, query);
     }).catch(() => {
-      alert('Ошибка при поиске адреса.');
+      alert('Ошибка поиска адреса.');
     });
+  }
+
+  function findMyLocation() {
+    if (!navigator.geolocation) {
+      alert('Геолокация не поддерживается.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = [position.coords.latitude, position.coords.longitude];
+        ymaps.geocode(coords).then(function(result) {
+          const firstGeoObject = result.geoObjects.get(0);
+          const address = firstGeoObject ? firstGeoObject.getAddressLine() : 'Адрес не определён';
+          setDeliveryPoint(coords, address);
+        });
+      },
+      (error) => {
+        alert('Не удалось определить местоположение.');
+        console.error(error);
+      }
+    );
+  }
+
+  function setDeliveryPoint(coords, address) {
+    if (deliveryPoint) {
+      map.geoObjects.remove(deliveryPoint);
+    }
+
+    deliveryPoint = new ymaps.Placemark(coords, {
+      balloonContent: address
+    });
+    map.geoObjects.add(deliveryPoint);
+
+    map.setCenter(coords, 15);
+    document.getElementById('addressInput').value = address;
+    calculate();
   }
 
   function getDistanceBetweenPoints(p1, p2) {
@@ -379,25 +458,16 @@
       const total = baseCost + deliveryCost;
 
       document.getElementById('result').innerHTML = `
-        <b>Стоимость бетона:</b> ${baseCost.toFixed(2)} ₽<br>
-        <b>Доставка:</b> ${deliveryCost} ₽<br>
-        <b>Итого:</b> ${total.toFixed(2)} ₽
+        <b>🧱 Бетон:</b> ${baseCost.toFixed(2)} ₽<br>
+        <b>🚚 Доставка:</b> ${deliveryCost} ₽<br>
+        <b>💰 Итого:</b> ${total.toFixed(2)} ₽
       `;
-
-      // Обновление адреса в форме, если поле пустое
-      if (document.getElementById('orderForm').style.display === 'block') {
-        const addrField = document.getElementById('deliveryAddress');
-        if (!addrField.value) {
-          const addr = deliveryPoint.properties.get('balloonContent');
-          if (addr && !addr.includes('Определение') && !addr.includes('Ошибка')) {
-            addrField.value = addr;
-          }
-        }
-      }
+      document.getElementById('result').style.display = 'block';
 
       showOrderForm();
     } else {
-      document.getElementById('result').textContent = "Введите объём и укажите точку.";
+      document.getElementById('result').innerHTML = 'Введите объём и укажите точку.';
+      document.getElementById('result').style.display = 'block';
       document.getElementById('orderForm').style.display = 'none';
     }
   }
@@ -434,7 +504,7 @@
     const resultText = document.getElementById('result').innerText;
 
     if (!name || !phone) {
-      alert('Пожалуйста, заполните имя и телефон!');
+      alert('Заполните имя и телефон!');
       return;
     }
 
@@ -454,7 +524,7 @@
     if (method === 'whatsapp') {
       url = `https://wa.me/79110911311?text=${encodedMessage}`;
     } else if (method === 'telegram') {
-      url = `https://t.me/monolitbeton?text=${encodedMessage}`;
+      url = `https://t.me/betonmaster?text=${encodedMessage}`;
     }
 
     window.open(url, '_blank');
