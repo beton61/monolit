@@ -163,18 +163,18 @@
       gap: 4px;
     }
 
-    .result {
-      margin-top: 20px;
-      padding: 16px;
+    .cost-details {
+      margin: 14px 0;
+      padding: 12px;
       background-color: #e8f4fc;
-      border-left: 5px solid #3498db;
-      border-radius: 10px;
-      font-size: 0.98rem;
-      line-height: 1.6;
+      border-left: 4px solid #3498db;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.5;
       color: #2c3e50;
     }
 
-    .result b {
+    .cost-details b {
       color: #1a5276;
     }
 
@@ -313,6 +313,13 @@
       <label for="deliveryAddress"><i class="fas fa-map-pin"></i> Адрес доставки</label>
       <input type="text" id="deliveryAddress" placeholder="Подтянется автоматически" readonly />
 
+      <!-- Расчёт стоимости ВНУТРИ формы, между адресом и комментарием -->
+      <div class="cost-details" id="costDetails" style="display: none;">
+        <b>🧱 Бетон:</b> <span id="costBase">0 ₽</span><br>
+        <b>🚚 Доставка:</b> <span id="costDelivery">0 ₽</span><br>
+        <b>💰 Итого:</b> <span id="costTotal">0 ₽</span>
+      </div>
+
       <label for="comment"><i class="fas fa-comment"></i> Комментарий</label>
       <textarea id="comment" rows="3" placeholder="Подъезд, звонок за час..."></textarea>
 
@@ -325,9 +332,6 @@
         </button>
       </div>
     </div>
-
-    <!-- 6. Итоговая стоимость — теперь ПОД формой -->
-    <div class="result" id="result" style="display: none;"></div>
   </section>
 </div>
 
@@ -475,17 +479,16 @@
 
       const total = baseCost + deliveryCost;
 
-      document.getElementById('result').innerHTML = `
-        <b>🧱 Бетон:</b> ${baseCost.toFixed(2)} ₽<br>
-        <b>🚚 Доставка:</b> ${deliveryCost} ₽<br>
-        <b>💰 Итого:</b> ${total.toFixed(2)} ₽
-      `;
-      document.getElementById('result').style.display = 'block';
+      // Обновляем стоимость внутри формы
+      document.getElementById('costBase').textContent = baseCost.toFixed(2) + ' ₽';
+      document.getElementById('costDelivery').textContent = deliveryCost + ' ₽';
+      document.getElementById('costTotal').textContent = total.toFixed(2) + ' ₽';
+      document.getElementById('costDetails').style.display = 'block';
 
       showOrderForm();
     } else {
-      document.getElementById('result').innerHTML = 'Введите объём и укажите точку.';
-      document.getElementById('result').style.display = 'block';
+      alert('Введите объём и укажите точку доставки.');
+      document.getElementById('costDetails').style.display = 'none';
       document.getElementById('orderForm').style.display = 'none';
     }
   }
@@ -494,6 +497,7 @@
     const form = document.getElementById('orderForm');
     form.style.display = 'block';
 
+    // Если адрес ещё не заполнен — подтягиваем
     if (deliveryPoint && !document.getElementById('deliveryAddress').value) {
       const addr = deliveryPoint.properties.get('balloonContent');
       if (addr && !addr.includes('Определение') && !addr.includes('Ошибка')) {
@@ -518,7 +522,9 @@
     const comment = document.getElementById('comment').value.trim();
     const volume = document.getElementById('volume').value;
     const mark = document.getElementById('mark').options[document.getElementById('mark').selectedIndex].text;
-    const resultText = document.getElementById('result').innerText;
+    const baseCost = document.getElementById('costBase').textContent;
+    const deliveryCost = document.getElementById('costDelivery').textContent;
+    const totalCost = document.getElementById('costTotal').textContent;
 
     if (!name || !phone) {
       alert('Заполните имя и телефон!');
@@ -532,7 +538,10 @@
       + `📞 Телефон: ${phone}\n`
       + `📍 Адрес: ${address || 'не указан'}\n`
       + (comment ? `💬 Коммент: ${comment}\n` : '')
-      + `\n${resultText}\n\n`
+      + `\n💰 Стоимость:\n`
+      + `Бетон: ${baseCost}\n`
+      + `Доставка: ${deliveryCost}\n`
+      + `Итого: ${totalCost}\n\n`
       + `Спасибо!`;
 
     const encodedMessage = encodeURIComponent(message);
