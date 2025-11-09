@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Расчет стоимости бетона</title>
+  <title>БетонМастер — Калькулятор и прайс</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.2.2/imask.min.js"></script>
@@ -73,6 +73,20 @@
       border-radius: 16px;
       padding: 20px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 18px 0 12px;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2 i {
+      color: #3498db;
     }
 
     label {
@@ -178,6 +192,36 @@
       color: #1a5276;
     }
 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.95rem;
+    }
+
+    table th, table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    table th {
+      background-color: #f1f5f9;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f8f9fc;
+    }
+
+    .note {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 12px;
+      font-style: italic;
+    }
+
     footer {
       text-align: center;
       padding: 18px;
@@ -237,6 +281,11 @@
       input, button {
         font-size: 1rem;
       }
+
+      table, table th, table td {
+        font-size: 0.85rem;
+        padding: 6px;
+      }
     }
 
     input:-webkit-autofill,
@@ -255,12 +304,13 @@
     <i class="fas fa-hard-hat"></i>
   </div>
   <h1>БетонМастер</h1>
-  <p>Доставка бетона по Ростовской области</p>
+  <p>Доставка бетона и изделия из железобетона</p>
 </header>
 
 <div class="container">
+  <!-- === КАЛЬКУЛЯТОР БЕТОНА === -->
   <section class="block">
-    <!-- 1. Марка бетона -->
+    <h2><i class="fas fa-tint"></i> Калькулятор бетона</h2>
     <label for="mark"><i class="fas fa-cube"></i> Марка бетона</label>
     <select id="mark">
       <option value="4800">М100 — 4 800 ₽/м³</option>
@@ -274,16 +324,13 @@
       <option value="5400">Раствор М150 — 5 400 ₽/м³</option>
     </select>
 
-    <!-- 2. Объем -->
     <label for="volume"><i class="fas fa-ruler-combined"></i> Объем (м³)</label>
     <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
 
-    <!-- 3. Адрес доставки -->
     <h2 style="font-size: 1.1rem; margin: 18px 0 10px; color: #2c3e50;">
       <i class="fas fa-map-marker-alt"></i> Адрес доставки
     </h2>
 
-    <!-- Карта с контролами поверх -->
     <div id="map">
       <div class="map-controls">
         <input type="text" id="addressInput" placeholder="Улица, дом" />
@@ -294,12 +341,10 @@
       </div>
     </div>
 
-    <!-- 4. Кнопка расчёта -->
     <button onclick="calculate()" style="margin-top: 16px;">
       <i class="fas fa-calculator"></i> Рассчитать стоимость
     </button>
 
-    <!-- 5. Форма заказа -->
     <div id="orderForm" style="display: none; margin-top: 20px; padding: 16px; background-color: #f8f9fa; border-radius: 12px;">
       <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: #2c3e50;">
         <i class="fas fa-shopping-cart"></i> Оформить заказ
@@ -313,7 +358,6 @@
       <label for="deliveryAddress"><i class="fas fa-map-pin"></i> Адрес доставки</label>
       <input type="text" id="deliveryAddress" placeholder="Подтянется автоматически" readonly />
 
-      <!-- Расчёт стоимости ВНУТРИ формы -->
       <div class="cost-details" id="costDetails" style="display: none;">
         <b>🧱 Бетон:</b> <span id="costBase">0 ₽</span><br>
         <b>🚚 Доставка:</b> <span id="costDelivery">0 ₽</span><br>
@@ -334,6 +378,140 @@
           <i class="fab fa-telegram"></i> Telegram
         </button>
       </div>
+    </div>
+  </section>
+
+  <!-- === ПРАЙС НА ФБС === -->
+  <section class="block">
+    <h2><i class="fas fa-cubes"></i> Прайс на ФБС (блоки фундаментные)</h2>
+    <p>Соответствие ГОСТ 13579-78. Размеры указаны в миллиметрах.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Марка</th>
+          <th>Длина × Ширина × Высота, мм</th>
+          <th>Объём, м³</th>
+          <th>Масса, т</th>
+          <th>Цена, ₽</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ФБС 6-3-6</td>
+          <td>5940 × 300 × 580</td>
+          <td>1.03</td>
+          <td>2.58</td>
+          <td>5 800</td>
+        </tr>
+        <tr>
+          <td>ФБС 5-3-6</td>
+          <td>4980 × 300 × 580</td>
+          <td>0.87</td>
+          <td>2.18</td>
+          <td>4 900</td>
+        </tr>
+        <tr>
+          <td>ФБС 4-3-6</td>
+          <td>3980 × 300 × 580</td>
+          <td>0.69</td>
+          <td>1.73</td>
+          <td>3 800</td>
+        </tr>
+        <tr>
+          <td>ФБС 3-3-6</td>
+          <td>2980 × 300 × 580</td>
+          <td>0.52</td>
+          <td>1.30</td>
+          <td>3 200</td>
+        </tr>
+        <tr>
+          <td>ФБС 2-3-6</td>
+          <td>1980 × 300 × 580</td>
+          <td>0.35</td>
+          <td>0.88</td>
+          <td>2 700</td>
+        </tr>
+        <tr>
+          <td>ФБС 2-4-6</td>
+          <td>1980 × 400 × 580</td>
+          <td>0.46</td>
+          <td>1.15</td>
+          <td>3 000</td>
+        </tr>
+        <tr>
+          <td>ФБС 2-5-6</td>
+          <td>1980 × 500 × 580</td>
+          <td>0.58</td>
+          <td>1.45</td>
+          <td>3 300</td>
+        </tr>
+        <tr>
+          <td>ФБС 1-3-6</td>
+          <td>980 × 300 × 580</td>
+          <td>0.17</td>
+          <td>0.43</td>
+          <td>2 200</td>
+        </tr>
+        <tr>
+          <td>ФБС 1-4-6</td>
+          <td>980 × 400 × 580</td>
+          <td>0.23</td>
+          <td>0.58</td>
+          <td>2 400</td>
+        </tr>
+        <tr>
+          <td>ФБС 1-5-6</td>
+          <td>980 × 500 × 580</td>
+          <td>0.29</td>
+          <td>0.73</td>
+          <td>2 700</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      * Цены указаны за 1 штуку. Объём и масса — приблизительные. Доставка рассчитывается отдельно.
+    </div>
+  </section>
+
+  <!-- === ПРАЙС НА ПОЛУСФЕРЫ === -->
+  <section class="block">
+    <h2><i class="fas fa-circle-half-stroke"></i> Бетонные полусферы</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Тип</th>
+          <th>Описание</th>
+          <th>Высота, м</th>
+          <th>Диаметр, м</th>
+          <th>Вес, т</th>
+          <th>Цена, ₽</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Полусфера</td>
+          <td>Без опоры</td>
+          <td>0.8</td>
+          <td>1.4</td>
+          <td>0.8</td>
+          <td>4 200</td>
+        </tr>
+        <tr>
+          <td>Полусфера + столб</td>
+          <td>С бетонным столбом (1.5 м)</td>
+          <td>2.3</td>
+          <td>1.4</td>
+          <td>1.6</td>
+          <td>5 500</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      * Столб — бетонный, с закладными. Цена указана за 1 штуку.
     </div>
   </section>
 </div>
@@ -482,13 +660,11 @@
 
       const total = baseCost + deliveryCost;
 
-      // Обновляем стоимость
       document.getElementById('costBase').textContent = baseCost.toFixed(2) + ' ₽';
       document.getElementById('costDelivery').textContent = deliveryCost + ' ₽';
       document.getElementById('costTotal').textContent = total.toFixed(2) + ' ₽';
       document.getElementById('costDetails').style.display = 'block';
 
-      // Показываем предупреждение, если доставка дальше 10 км от завода
       const showWarning = distanceKm > 10;
       document.getElementById('deliveryWarning').style.display = showWarning ? 'block' : 'none';
 
@@ -537,7 +713,7 @@
       return;
     }
 
-    const message = `📦 Заказ бетона\n\n`
+    let message = `📦 Заказ бетона\n\n`
       + `🧱 Марка: ${mark}\n`
       + `㎥ Объем: ${volume} м³\n`
       + `👤 Имя: ${name}\n`
@@ -549,7 +725,6 @@
       + `Доставка: ${deliveryCost}\n`
       + `Итого: ${totalCost}\n\n`;
 
-    // Добавляем предупреждение, если было видно
     const warningVisible = document.getElementById('deliveryWarning').style.display === 'block';
     if (warningVisible) {
       message += `⚠️ Внимание! Стоимость доставки за пределами г. Батайск может отличаться. Уточняйте у оператора.\n\n`;
@@ -563,7 +738,7 @@
     if (method === 'whatsapp') {
       url = `https://wa.me/79110911311?text=${encodedMessage}`;
     } else if (method === 'telegram') {
-      url = `https://t.me/@Olegzov13?text=${encodedMessage}`;
+      url = `https://t.me/betonmaster?text=${encodedMessage}`;
     }
 
     window.open(url, '_blank');
@@ -572,5 +747,3 @@
 
 </body>
 </html>
-
-
