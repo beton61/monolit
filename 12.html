@@ -3,14 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <!-- SEO: Улучшенные мета-теги -->
-  <title>Монолит Дон — Доставка бетона, блоки ФБС, парковочные полусферы | Продажа и аренда в Ростове и Батайске</title>
-  <meta name="description" content="Компания «Монолит Дон» — доставка бетона, продажа блоков ФБС, парковочных полусфер, ограничителей из бетона. Аренда бетономашины и бетононасоса по Ростовской области.">
-  <meta name="keywords" content="бетон, доставка бетона, блоки ФБС, парковочные полусферы, ограничители парковки, бетонный насос, аренда бетона, продажа бетона, ЖБИ, Ростов-на-Дону, Батайск, Ростовская область">
+
+  <!-- SEO: Улучшенный заголовок и описание -->
+  <title>Монолит Дон — Доставка бетона, блоки ФБС, парковочные полусферы в Батайске и Ростове</title>
+  <meta name="description" content="Завод ЖБИ «Монолит Дон» в Батайске. Доставка бетона, продажа блоков ФБС, парковочные полусферы и ограничители из бетона. Ростов-на-Дону, Ростовская область.">
+  <meta name="keywords" content="бетон, доставка бетона, блоки ФБС, парковочные полусферы, ограничители парковки, бетонные столбики, ФБС 3-3-6, ФБС 4-4-6, бетон Батайск, бетон Ростов, аренда бетономешалки, бетонный насос">
+
+  <!-- Open Graph для соцсетей -->
+  <meta property="og:title" content="Монолит Дон — Бетон, ФБС, полусферы в Ростовской области">
+  <meta property="og:description" content="Производство и доставка бетона, блоков ФБС, парковочных ограничителей. Батайск — низкие цены, качество, скорость.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/beton61/monolit/main/seo-preview.jpg">
+  <meta property="og:url" content="https://monolith-don.ru">
+  <meta property="og:type" content="website">
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.2.2/imask.min.js"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -162,7 +171,7 @@
       display: flex;
       gap: 6px;
       flex-direction: column;
-      width: 180px;
+      width: 180px; /* Уменьшена ширина */
     }
 
     /* Уменьшены кнопки на карте */
@@ -319,27 +328,35 @@
       }
     }
 
-    /* Schema.org микроразметка (скрытая) */
-    .hidden-schema {
+    /* Скрытое SEO-содержимое */
+    .seo-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #444;
+      margin: 20px 0;
+      padding: 16px;
+      background: #f0f4f8;
+      border-radius: 12px;
       display: none;
     }
   </style>
+
+  <!-- Подключение Яндекс.Карт -->
   <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
 </head>
 <body>
 
-<!-- SEO: Скрытая микроразметка -->
-<div class="hidden-schema" itemscope itemtype="http://schema.org/LocalBusiness">
+<!-- Скрытая SEO-микроразметка -->
+<div style="display:none;" itemscope itemtype="http://schema.org/LocalBusiness">
   <span itemprop="name">Монолит Дон</span>
-  <span itemprop="description">Продажа и доставка бетона, блоков ФБС, парковочных полусфер. Аренда бетономашины и бетононасоса по Ростовской области.</span>
+  <span itemprop="description">Производство и доставка бетона, блоков ФБС, парковочных полусфер в Ростовской области.</span>
   <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-    <span itemprop="addressLocality">Батайск</span>,
-    <span itemprop="addressRegion">Ростовская область</span>
+    <span itemprop="addressLocality">Батайск</span>, <span itemprop="addressRegion">Ростовская область</span>
   </div>
   <span itemprop="telephone">+79110911311</span>
-  <span itemprop="email">info@monolith-don.ru</span>
   <span itemprop="url">https://monolith-don.ru</span>
-  <span itemprop="openingHours">Mo,Tu,We,Th,Fr,Sa,Su 08:00-20:00</span>
+  <span itemprop="openingHours">Mo-Su 08:00-20:00</span>
+  <span itemprop="image">https://raw.githubusercontent.com/beton61/monolit/main/bg-location-map.png</span>
 </div>
 
 <header>
@@ -351,6 +368,7 @@
 </header>
 
 <div class="container">
+
   <!-- === КАЛЬКУЛЯТОР БЕТОНА === -->
   <section class="block">
     <h2><i class="fas fa-tint"></i> Калькулятор бетона</h2>
@@ -426,30 +444,131 @@
 
   <!-- === ФБС 3 и 4 === -->
   <section class="block">
-    <h2><i class="fas fa-cubes"></i> Блоки ФБС — продажа и доставка</h2>
-    <p>Фундаментные блоки — ФБС 3 и ФБС 4. Соответствуют ГОСТ 13579-78. Доставка по Ростовской области.</p>
+    <h2><i class="fas fa-cubes"></i> Блоки ФБС</h2>
+    <p>Фундаментные блоки — ФБС 3 и ФБС 4. Соответствуют ГОСТ 13579-78.</p>
     <div class="product-grid">
-      <!-- карточки продуктов -->
+      <div class="product-card">
+        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+        </div>
+        <div class="product-info">
+          <h3>ФБС 3-3-6</h3>
+          <p>2.98 × 0.3 × 0.58 м</p>
+          <p>0.52 м³ | 1.3 т</p>
+          <p class="price">3 200 ₽</p>
+          <button class="btn-order" onclick="orderFBS('ФБС 3-3-6', '2.98×0.3×0.58 м', 3200)">
+            Заказать
+          </button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+        </div>
+        <div class="product-info">
+          <h3>ФБС 3-4-6</h3>
+          <p>2.98 × 0.4 × 0.58 м</p>
+          <p>0.69 м³ | 1.73 т</p>
+          <p class="price">3 800 ₽</p>
+          <button class="btn-order" onclick="orderFBS('ФБС 3-4-6', '2.98×0.4×0.58 м', 3800)">
+            Заказать
+          </button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+        </div>
+        <div class="product-info">
+          <h3>ФБС 4-3-6</h3>
+          <p>3.98 × 0.3 × 0.58 м</p>
+          <p>0.69 м³ | 1.73 т</p>
+          <p class="price">3 800 ₽</p>
+          <button class="btn-order" onclick="orderFBS('ФБС 4-3-6', '3.98×0.3×0.58 м', 3800)">
+            Заказать
+          </button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+        </div>
+        <div class="product-info">
+          <h3>ФБС 4-4-6</h3>
+          <p>3.98 × 0.4 × 0.58 м</p>
+          <p>0.93 м³ | 2.33 т</p>
+          <p class="price">4 500 ₽</p>
+          <button class="btn-order" onclick="orderFBS('ФБС 4-4-6', '3.98×0.4×0.58 м', 4500)">
+            Заказать
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- === ПАРКОВОЧНЫЕ ПОЛУСФЕРЫ === -->
   <section class="block">
-    <h2><i class="fas fa-circle-half-stroke"></i> Парковочные полусферы и ограничители</h2>
-    <p>Армированный бетон. Диаметр 25 см, высота 50 см. Установка, доставка, аренда. Отличное решение для парковок.</p>
+    <h2><i class="fas fa-circle-half-stroke"></i> Парковочные полусферы</h2>
+    <p>Армированный бетон. Диаметр 25 см, высота 50 см, вес 70 кг.</p>
     <div class="product-grid">
-      <!-- карточки полусфер -->
+      <div class="product-card">
+        <div class="product-img" style="background: url('https://via.placeholder.com/300x160?text=Полусфера+без+столба') no-repeat center/cover;">
+        </div>
+        <div class="product-info">
+          <h3>Полусфера (без столба)</h3>
+          <p>Ø25 см × 50 см</p>
+          <p>Вес: 70 кг</p>
+          <p class="price">4 200 ₽</p>
+          <button class="btn-order" onclick="orderSphere('Полусфера без столба', 4200)">
+            Заказать
+          </button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="background: url('https://via.placeholder.com/300x160?text=Полусфера+со+столбом') no-repeat center/cover;">
+        </div>
+        <div class="product-info">
+          <h3>Полусфера + столб</h3>
+          <p>С опорой 1.5 м</p>
+          <p>Вес: 1.6 т</p>
+          <p class="price">5 500 ₽</p>
+          <button class="btn-order" onclick="orderSphere('Полусфера со столбом', 5500)">
+            Заказать
+          </button>
+        </div>
+      </div>
     </div>
     <div class="note">
       * Фото — для примера. Реальные изделия изготавливаются по ТУ.
     </div>
   </section>
+
+  <!-- Скрытый SEO-текст для поисковиков -->
+  <section class="seo-text">
+    <h3>Доставка бетона и ЖБИ в Ростове-на-Дону и Батайске</h3>
+    <p>
+      Компания «Монолит Дон» предлагает качественный <strong>бетон</strong> от завода в <strong>Батайске</strong> с доставкой по <strong>Ростову-на-Дону</strong>, Новошахтинску и всей <strong>Ростовской области</strong>. У нас вы найдете <strong>блоки ФБС</strong> (3 и 4 серии) по ГОСТ, подходящие для фундаментов, заборов, подпорных стен.
+    </p>
+    <p>
+      В наличии — <strong>парковочные полусферы</strong> и <strong>бетонные ограничители парковки</strong> — прочные, долговечные, устойчивые к ударям. Идеально подходят для обустройства парковок у ТЦ, офисов, дворов.
+    </p>
+    <p>
+      Также оказываем услуги: <strong>аренда бетономешалки</strong>, <strong>бетонный насос</strong>, доставка миксером. Гарантия качества, прозрачные цены, работа без выходных.
+    </p>
+    <p>
+      📞 Звоните: <strong><a href="tel:+79110911311">+7 (911) 091-13-11</a></strong> — проконсультируем, рассчитаем стоимость, организуем доставку!
+    </p>
+  </section>
+
 </div>
 
 <footer>
   &copy; 2009–2024 Монолит Дон. Все права защищены.<br>
-  Telegram: <a href="https://t.me/Olegzov13" target="_blank" style="color: #0088cc;">@Olegzov13</a> |
-  Телефон: <a href="tel:+79110911311" style="color: #0088cc;">+7 (911) 091-13-11</a>
+  Telegram: <a href="https://t.me/Olegzov13" target="_blank" style="color: #0088cc;">@Olegzov13</a>
 </footer>
 
 <!-- Фиксированная нижняя панель -->
@@ -473,16 +592,16 @@
       controls: ['zoomControl']
     });
 
-    // Загрузка кастомной иконки завода
-    const factoryIcon = new ymaps.Placemark(factoryCoords, {
+    // Кастомная иконка завода
+    const factoryMarker = new ymaps.Placemark(factoryCoords, {
       balloonContent: 'Завод "Монолит Дон", Батайск'
     }, {
       iconLayout: 'default#image',
-      iconImageHref: 'https://github.com/beton61/monolit/blob/main/bg-location-map.png', // ← замените на вашу реальную картинку: 'img/factory.png'
-      iconImageSize: [32, 32],
-      iconImageOffset: [-16, -16]
+      iconImageHref: 'https://raw.githubusercontent.com/beton61/monolit/main/bg-location-map.png',
+      iconImageSize: [40, 40],   // Размер изображения
+      iconImageOffset: [-20, -20] // Центр изображения
     });
-    map.geoObjects.add(factoryIcon);
+    map.geoObjects.add(factoryMarker);
 
     map.events.add('click', function(e) {
       const coords = e.get('coords');
@@ -639,6 +758,7 @@
     const address = document.getElementById('deliveryAddress').value.trim();
     const comment = document.getElementById('comment').value.trim();
     const volume = document.getElementById('volume').value;
+    const mark = document.getElementById('mark').
     const mark = document.getElementById('mark').options[document.getElementById('mark').selectedIndex].text;
     const baseCost = document.getElementById('costBase').textContent;
     const deliveryCost = document.getElementById('costDelivery').textContent;
@@ -690,5 +810,6 @@
     window.open(`https://wa.me/79110911311?text=${encodeURIComponent(msg)}`, '_blank');
   }
 </script>
+
 </body>
 </html>
