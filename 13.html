@@ -592,15 +592,24 @@
       controls: ['zoomControl']
     });
 
-    // Кастомная иконка завода
-    const factoryMarker = new ymaps.Placemark(factoryCoords, {
-      balloonContent: 'Завод "Монолит Дон", Батайск'
-    }, {
-      iconLayout: 'default#image',
-      iconImageHref: 'https://github.com/beton61/monolit/blob/f255d4bdc8ff99925257e5131527153601ced97b/bg-location-map.png?raw=true',
-      iconImageSize: [40, 40],   // Размер изображения
-      iconImageOffset: [-20, -20] // Центр изображения
-    });
+    // Используем правильный путь к изображению
+    let factoryMarker;
+    try {
+      factoryMarker = new ymaps.Placemark(factoryCoords, {
+        balloonContent: 'Завод "Монолит Дон", Батайск'
+      }, {
+        iconLayout: 'default#image',
+        iconImageHref: 'https://github.com/beton61/monolit/blob/f255d4bdc8ff99925257e5131527153601ced97b/bg-location-map.png?raw=true',
+        iconImageSize: [40, 40],
+        iconImageOffset: [-20, -20]
+      });
+    } catch (e) {
+      console.warn('Не удалось загрузить кастомную иконку, используется стандартная');
+      factoryMarker = new ymaps.Placemark(factoryCoords, {
+        balloonContent: 'Завод "Монолит Дон", Батайск'
+      });
+    }
+
     map.geoObjects.add(factoryMarker);
 
     map.events.add('click', function(e) {
@@ -758,7 +767,6 @@
     const address = document.getElementById('deliveryAddress').value.trim();
     const comment = document.getElementById('comment').value.trim();
     const volume = document.getElementById('volume').value;
-    const mark = document.getElementById('mark').
     const mark = document.getElementById('mark').options[document.getElementById('mark').selectedIndex].text;
     const baseCost = document.getElementById('costBase').textContent;
     const deliveryCost = document.getElementById('costDelivery').textContent;
@@ -813,4 +821,5 @@
 
 </body>
 </html>
+
 
