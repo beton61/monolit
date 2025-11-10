@@ -164,36 +164,41 @@
     }
 
     .map-controls {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 500;
-      display: flex;
-      gap: 6px;
-      flex-direction: column;
-      width: 180px; /* Уменьшена ширина */
-    }
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 500;
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+  width: 150px;
+}
 
-    /* Уменьшены кнопки на карте */
-    .map-controls input {
-      font-size: 0.8rem;
-      padding: 6px 8px;
-    }
+.map-controls input {
+  font-size: 0.75rem;
+  padding: 5px 6px;
+  height: 30px;
+  border-radius: 8px;
+}
 
-    .map-controls button {
-      margin: 0;
-      width: 100%;
-      font-size: 0.8rem;
-      padding: 6px;
-    }
+.map-controls button {
+  margin: 0;
+  width: 100%;
+  font-size: 0.75rem;
+  padding: 5px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
 
-    .map-controls button.geo {
-      background-color: #e67e22;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
+.map-controls button.geo {
+  background-color: #e67e22;
+  padding: 4px 6px;
+  font-size: 0.7rem;
+}
 
     .cost-details {
       margin: 14px 0;
@@ -592,7 +597,7 @@
       controls: ['zoomControl']
     });
 
-    // Используем правильный путь к изображению
+    // Увеличенная иконка завода — 50x50
     let factoryMarker;
     try {
       factoryMarker = new ymaps.Placemark(factoryCoords, {
@@ -600,8 +605,8 @@
       }, {
         iconLayout: 'default#image',
         iconImageHref: 'https://github.com/beton61/monolit/blob/f255d4bdc8ff99925257e5131527153601ced97b/bg-location-map.png?raw=true',
-        iconImageSize: [40, 40],
-        iconImageOffset: [-20, -20]
+        iconImageSize: [50, 50],        // Увеличено
+        iconImageOffset: [-25, -25]     // Центрировано
       });
     } catch (e) {
       console.warn('Не удалось загрузить кастомную иконку, используется стандартная');
@@ -821,5 +826,6 @@
 
 </body>
 </html>
+
 
 
