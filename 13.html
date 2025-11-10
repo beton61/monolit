@@ -365,7 +365,7 @@
 
   <!-- === КАЛЬКУЛЯТОР БЕТОНА === -->
   <section class="block">
-    <h2><i class="fas fa-tint"></i> Калькулятор бетона</h2>
+    <h2><i class="fas fa-tint"></i> Расчет стоимости </h2>
     <label for="mark"><i class="fas fa-cube"></i> Марка бетона</label>
     <select id="mark">
       <option value="4800">М100 — 4 800 ₽/м³</option>
@@ -436,72 +436,113 @@
     </div>
   </section>
 
-  <!-- === ФБС 3 и 4 === -->
-  <section class="block">
-    <h2><i class="fas fa-cubes"></i> Блоки ФБС</h2>
-    <p>Фундаментные блоки — ФБС 3 и ФБС 4. Соответствуют ГОСТ 13579-78.</p>
-    <div class="product-grid">
-      <div class="product-card">
-       <div class="product-img" style="background: url('https://github.com/beton61/monolit/blob/main/24-4-6.jpg?raw=true') no-repeat center/cover;"></div>
-          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
-        </div>
-        <div class="product-info">
-          <h3>ФБС 3-3-6</h3>
-          <p>2.98 × 0.3 × 0.58 м</p>
-          <p>0.52 м³ | 1.3 т</p>
-          <p class="price">3 200 ₽</p>
-          <button class="btn-order" onclick="orderFBS('ФБС 3-3-6', '2.98×0.3×0.58 м', 3200)">
-            Заказать
-          </button>
-        </div>
-      </div>
+ <!-- === ФБС 3 и 4 длиной 8, 12, 24 дм === -->
+<section class="block">
+  <h2><i class="fas fa-cubes"></i> Блоки ФБС</h2>
+  <p>Фундаментные блоки — ФБС ГОСТ 13579-78.</p>
 
-      <div class="product-card">
-        <div class="product-img" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
-          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-img" style="background-image: url('https://github.com/beton61/monolit/blob/main/24-3-6.jpg?raw=true');"></div>
+      <div class="product-info">
+        <h3>ФБС 24.3.6</h3>
+        <p>2.38 × 0.3 × 0.58 м</p>
+        <p>0.41 м³ | 1.03 т</p>
+        <p class="price">2 900 ₽</p>
+        <div class="note" style="font-size: 0.8rem; color: #27ae60; margin: 4px 0;">
+          От 100 шт. — скидка!
         </div>
-        <div class="product-info">
-          <h3>ФБС 3-4-6</h3>
-          <p>2.98 × 0.4 × 0.58 м</p>
-          <p>0.69 м³ | 1.73 т</p>
-          <p class="price">3 800 ₽</p>
-          <button class="btn-order" onclick="orderFBS('ФБС 3-4-6', '2.98×0.4×0.58 м', 3800)">
-            Заказать
-          </button>
-        </div>
-      </div>
-
-      <div class="product-card">
-         <div class="product-img" style="background: url('https://github.com/beton61/monolit/blob/main/12-4-6.jpg?raw=true') no-repeat center/cover;"></div>
-          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
-        </div>
-        <div class="product-info">
-          <h3>ФБС 4-3-6</h3>
-          <p>3.98 × 0.3 × 0.58 м</p>
-          <p>0.69 м³ | 1.73 т</p>
-          <p class="price">3 800 ₽</p>
-          <button class="btn-order" onclick="orderFBS('ФБС 4-3-6', '3.98×0.3×0.58 м', 3800)">
-            Заказать
-          </button>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <div class="product-img" style="background: url('https://github.com/beton61/monolit/blob/main/24-3-6.jpg?raw=true') no-repeat center/cover;"></div>
-          <i class="fas fa-cube" style="font-size: 60px; color: #888;"></i>
-        </div>
-        <div class="product-info">
-          <h3>ФБС 4-4-6</h3>
-          <p>3.98 × 0.4 × 0.58 м</p>
-          <p>0.93 м³ | 2.33 т</p>
-          <p class="price">4 500 ₽</p>
-          <button class="btn-order" onclick="orderFBS('ФБС 4-4-6', '3.98×0.4×0.58 м', 4500)">
-            Заказать
-          </button>
-        </div>
+        <button class="btn-order" onclick="orderFBS('ФБС 24.3.6', '2.38×0.3×0.58 м', 2900)">
+          Заказать
+        </button>
       </div>
     </div>
-  </section>
+
+    <div class="product-card">
+      <div class="product-img" style="background-image: url('https://github.com/beton61/monolit/blob/main/12-3-6.jpg?raw=true');"></div>
+      <div class="product-info">
+        <h3>ФБС 12.3.6</h3>
+        <p>1.19 × 0.3 × 0.58 м</p>
+        <p>0.21 м³ | 0.53 т</p>
+        <p class="price">2 000 ₽</p>
+        <div class="note" style="font-size: 0.8rem; color: #27ae60; margin: 4px 0;">
+          От 100 шт. — скидка!
+        </div>
+        <button class="btn-order" onclick="orderFBS('ФБС 12.3.6', '1.19×0.3×0.58 м', 2000)">
+          Заказать
+        </button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background-image: url('https://github.com/beton61/monolit/blob/main/fbs-8-3-6.jpg?raw=true');"></div>
+      <div class="product-info">
+        <h3>ФБС 8.3.6</h3>
+        <p>0.79 × 0.3 × 0.58 м</p>
+        <p>0.14 м³ | 0.35 т</p>
+        <p class="price">1 500 ₽</p>
+        <div class="note" style="font-size: 0.8rem; color: #27ae60; margin: 4px 0;">
+          От 100 шт. — скидка!
+        </div>
+        <button class="btn-order" onclick="orderFBS('ФБС 8.3.6', '0.79×0.3×0.58 м', 1500)">
+          Заказать
+        </button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background-image: url('https://github.com/beton61/monolit/blob/main/24-4-6.jpg?raw=true');"></div>
+      <div class="product-info">
+        <h3>ФБС 24.4.6</h3>
+        <p>2.38 × 0.4 × 0.58 м</p>
+        <p>0.55 м³ | 1.38 т</p>
+        <p class="price">3 300 ₽</p>
+        <div class="note" style="font-size: 0.8rem; color: #27ae60; margin: 4px 0;">
+          От 100 шт. — скидка!
+        </div>
+        <button class="btn-order" onclick="orderFBS('ФБС 24.4.6', '2.38×0.4×0.58 м', 3300)">
+          Заказать
+        </button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background-image: url('https://github.com/beton61/monolit/blob/main/12-4-6.jpg?raw=true');"></div>
+      <div class="product-info">
+        <h3>ФБС 12.4.6</h3>
+        <p>1.19 × 0.4 × 0.58 м</p>
+        <p>0.28 м³ | 0.7 т</p>
+        <p class="price">2 100 ₽</p>
+        <div class="note" style="font-size: 0.8rem; color: #27ae60; margin: 4px 0;">
+          От 100 шт. — скидка!
+        </div>
+        <button class="btn-order" onclick="orderFBS('ФБС 12.4.6', '1.19×0.4×0.58 м', 2100)">
+          Заказать
+        </button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background-image: url('https://github.com/beton61/monolit/blob/main/fbs-8-4-6.jpg?raw=true');"></div>
+      <div class="product-info">
+        <h3>ФБС 8.4.6</h3>
+        <p>0.79 × 0.4 × 0.58 м</p>
+        <p>0.18 м³ | 0.46 т</p>
+        <p class="price">1 600 ₽</p>
+        <div class="note" style="font-size: 0.8rem; color: #27ae60; margin: 4px 0;">
+          От 100 шт. — скидка!
+        </div>
+        <button class="btn-order" onclick="orderFBS('ФБС 8.4.6', '0.79×0.4×0.58 м', 1600)">
+          Заказать
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top: 12px;">
+    * Изготовление по ТУ. Доставка по Ростовской области. От 100 штук — индивидуальные условия.
+  </div>
+</section>
 
   <!-- === ПАРКОВОЧНЫЕ ПОЛУСФЕРЫ === -->
   <section class="block">
@@ -587,7 +628,7 @@
         balloonContent: 'Завод "Монолит Дон", Батайск'
       }, {
         iconLayout: 'default#image',
-        iconImageHref: 'https://github.com/beton61/monolit/blob/f255d4bdc8ff99925257e5131527153601ced97b/bg-location-map.png?raw=true',
+        iconImageHref: 'https://github.com/beton61/monolit/blob/main/location-map.png?raw=true',
         iconImageSize: [50, 50],
         iconImageOffset: [-25, -25]
       });
@@ -819,4 +860,5 @@
 
 </body>
 </html>
+
 
