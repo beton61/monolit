@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <!-- SEO: Улучшенные мета-теги -->
+  <title>Монолит Дон — Доставка бетона, блоки ФБС, парковочные полусферы | Продажа и аренда в Ростове и Батайске</title>
+  <meta name="description" content="Компания «Монолит Дон» — доставка бетона, продажа блоков ФБС, парковочных полусфер, ограничителей из бетона. Аренда бетономашины и бетононасоса по Ростовской области.">
+  <meta name="keywords" content="бетон, доставка бетона, блоки ФБС, парковочные полусферы, ограничители парковки, бетонный насос, аренда бетона, продажа бетона, ЖБИ, Ростов-на-Дону, Батайск, Ростовская область">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.2.2/imask.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fc;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2c3e50, #1a2530);
+      color: white;
+      padding: 24px 15px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .logo i {
+      font-size: 32px;
+      color: #2980b9;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: #d5d9e0;
+      margin-top: 6px;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: auto;
+      padding: 15px;
+    }
+
+    section {
+      margin-bottom: 28px;
+    }
+
+    .block {
+      background-color: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 18px 0 12px;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2 i {
+      color: #3498db;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #555;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      margin-top: 6px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      background-color: #fdfdfd;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    button.success {
+      background-color: #27ae60;
+      margin-top: 16px;
+    }
+
+    button.success:hover {
+      background-color: #219a52;
+    }
+
+    #map {
+      height: 250px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      margin-top: 15px;
+      border: 1px solid #e0e0e0;
+      position: relative;
+    }
+
+    .map-controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 500;
+      display: flex;
+      gap: 6px;
+      flex-direction: column;
+      width: 180px;
+    }
+
+    /* Уменьшены кнопки на карте */
+    .map-controls input {
+      font-size: 0.8rem;
+      padding: 6px 8px;
+    }
+
+    .map-controls button {
+      margin: 0;
+      width: 100%;
+      font-size: 0.8rem;
+      padding: 6px;
+    }
+
+    .map-controls button.geo {
+      background-color: #e67e22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .cost-details {
+      margin: 14px 0;
+      padding: 12px;
+      background-color: #e8f4fc;
+      border-left: 4px solid #3498db;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #2c3e50;
+    }
+
+    .cost-details b {
+      color: #1a5276;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 12px 0;
+    }
+
+    .product-card {
+      border: 1px solid #eee;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      background-color: #f1f1f1;
+    }
+
+    .product-info {
+      padding: 12px;
+    }
+
+    .product-info h3 {
+      font-size: 1rem;
+      margin: 0 0 6px;
+      color: #2c3e50;
+    }
+
+    .product-info p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 4px 0;
+    }
+
+    .price {
+      font-weight: 600;
+      color: #1a5276;
+      margin: 6px 0;
+    }
+
+    .btn-order {
+      width: 100%;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .btn-order:hover {
+      background-color: #27ae60;
+    }
+
+    .note {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px;
+      background-color: #1a2530;
+      color: #aaa;
+      font-size: 0.85rem;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #1a2530;
+      padding: 12px 8px;
+      box-shadow: 0 -4px 14px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: flex;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .bottom-bar a {
+      flex: 1;
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .bottom-bar .call {
+      background: #2c3e50;
+    }
+
+    .bottom-bar .whatsapp {
+      background: #25D366;
+    }
+
+    .bottom-bar .telegram {
+      background: #0088cc;
+    }
+
+    @media (max-width: 480px) {
+      .bottom-bar a {
+        font-size: 0.85rem;
+        padding: 10px;
+      }
+    }
+
+    /* Schema.org микроразметка (скрытая) */
+    .hidden-schema {
+      display: none;
+    }
+  </style>
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=9b6d7735-cc86-4daf-84e2-4120fffce9f9"></script>
+</head>
+<body>
+
+<!-- SEO: Скрытая микроразметка -->
+<div class="hidden-schema" itemscope itemtype="http://schema.org/LocalBusiness">
+  <span itemprop="name">Монолит Дон</span>
+  <span itemprop="description">Продажа и доставка бетона, блоков ФБС, парковочных полусфер. Аренда бетономашины и бетононасоса по Ростовской области.</span>
+  <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+    <span itemprop="addressLocality">Батайск</span>,
+    <span itemprop="addressRegion">Ростовская область</span>
+  </div>
+  <span itemprop="telephone">+79110911311</span>
+  <span itemprop="email">info@monolith-don.ru</span>
+  <span itemprop="url">https://monolith-don.ru</span>
+  <span itemprop="openingHours">Mo,Tu,We,Th,Fr,Sa,Su 08:00-20:00</span>
+</div>
+
+<header>
+  <div class="logo">
+    <i class="fas fa-building"></i>
+  </div>
+  <h1>Монолит Дон</h1>
+  <p>Бетон и железобетонные изделия — Ростовская область</p>
+</header>
+
+<div class="container">
+  <!-- === КАЛЬКУЛЯТОР БЕТОНА === -->
+  <section class="block">
+    <h2><i class="fas fa-tint"></i> Калькулятор бетона</h2>
+    <label for="mark"><i class="fas fa-cube"></i> Марка бетона</label>
+    <select id="mark">
+      <option value="4800">М100 — 4 800 ₽/м³</option>
+      <option value="5000">М150 — 5 000 ₽/м³</option>
+      <option value="5200">М200 — 5 200 ₽/м³</option>
+      <option value="5600">М250 — 5 600 ₽/м³</option>
+      <option value="5800">М300 — 5 800 ₽/м³</option>
+      <option value="5900">М350 — 5 900 ₽/м³</option>
+      <option value="6500">М400 — 6 400 ₽/м³</option>
+      <option value="5200">Раствор М100 — 5 200 ₽/м³</option>
+      <option value="5400">Раствор М150 — 5 400 ₽/м³</option>
+    </select>
+
+    <label for="volume"><i class="fas fa-ruler-combined"></i> Объем (м³)</label>
+    <input type="number" id="volume" placeholder="Например: 3.5" step="0.1" min="0.1">
+
+    <h2 style="font-size: 1.1rem; margin: 18px 0 10px; color: #2c3e50;">
+      <i class="fas fa-map-marker-alt"></i> Адрес доставки
+    </h2>
+
+    <div id="map">
+      <div class="map-controls">
+        <input type="text" id="addressInput" placeholder="Улица, дом" />
+        <button onclick="findAddress()"><i class="fas fa-search"></i> Найти</button>
+        <button onclick="findMyLocation()" class="geo" title="Найти моё местоположение">
+          <i class="fas fa-location-dot"></i> Меня
+        </button>
+      </div>
+    </div>
+
+    <button onclick="calculate()" style="margin-top: 16px;">
+      <i class="fas fa-calculator"></i> Рассчитать стоимость
+    </button>
+
+    <div id="orderForm" style="display: none; margin-top: 20px; padding: 16px; background-color: #f8f9fa; border-radius: 12px;">
+      <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: #2c3e50;">
+        <i class="fas fa-shopping-cart"></i> Оформить заказ
+      </h3>
+      <label for="clientName"><i class="fas fa-user"></i> Ваше имя</label>
+      <input type="text" id="clientName" placeholder="Иван Иванов" required />
+
+      <label for="clientPhone"><i class="fas fa-phone"></i> Телефон</label>
+      <input type="tel" id="clientPhone" placeholder="+7 (999) 123-45-67" required />
+
+      <label for="deliveryAddress"><i class="fas fa-map-pin"></i> Адрес доставки</label>
+      <input type="text" id="deliveryAddress" placeholder="Подтянется автоматически" readonly />
+
+      <div class="cost-details" id="costDetails" style="display: none;">
+        <b>🧱 Бетон:</b> <span id="costBase">0 ₽</span><br>
+        <b>🚚 Доставка:</b> <span id="costDelivery">0 ₽</span><br>
+        <b>💰 Итого:</b> <span id="costTotal">0 ₽</span>
+        <div id="deliveryWarning" style="margin-top: 8px; font-size: 0.85rem; color: #e74c3c; display: none;">
+          ⚠️ Внимание! Стоимость доставки за пределами г. Батайск может отличаться. Уточняйте у оператора.
+        </div>
+      </div>
+
+      <label for="comment"><i class="fas fa-comment"></i> Комментарий</label>
+      <textarea id="comment" rows="3" placeholder="Подъезд, звонок за час..."></textarea>
+
+      <div style="display: flex; gap: 10px; margin-top: 12px;">
+        <button onclick="submitOrder('whatsapp')" class="success" style="flex: 1;">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </button>
+        <button onclick="submitOrder('telegram')" class="success" style="flex: 1; background-color: #0088cc;">
+          <i class="fab fa-telegram"></i> Telegram
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- === ФБС 3 и 4 === -->
+  <section class="block">
+    <h2><i class="fas fa-cubes"></i> Блоки ФБС — продажа и доставка</h2>
+    <p>Фундаментные блоки — ФБС 3 и ФБС 4. Соответствуют ГОСТ 13579-78. Доставка по Ростовской области.</p>
+    <div class="product-grid">
+      <!-- карточки продуктов -->
+    </div>
+  </section>
+
+  <!-- === ПАРКОВОЧНЫЕ ПОЛУСФЕРЫ === -->
+  <section class="block">
+    <h2><i class="fas fa-circle-half-stroke"></i> Парковочные полусферы и ограничители</h2>
+    <p>Армированный бетон. Диаметр 25 см, высота 50 см. Установка, доставка, аренда. Отличное решение для парковок.</p>
+    <div class="product-grid">
+      <!-- карточки полусфер -->
+    </div>
+    <div class="note">
+      * Фото — для примера. Реальные изделия изготавливаются по ТУ.
+    </div>
+  </section>
+</div>
+
+<footer>
+  &copy; 2009–2024 Монолит Дон. Все права защищены.<br>
+  Telegram: <a href="https://t.me/Olegzov13" target="_blank" style="color: #0088cc;">@Olegzov13</a> |
+  Телефон: <a href="tel:+79110911311" style="color: #0088cc;">+7 (911) 091-13-11</a>
+</footer>
+
+<!-- Фиксированная нижняя панель -->
+<div class="bottom-bar">
+  <a href="tel:+79110911311" class="call"><i class="fas fa-phone-alt"></i> Звонок</a>
+  <a href="https://wa.me/79110911311" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+  <a href="https://t.me/Olegzov13" target="_blank" class="telegram"><i class="fab fa-telegram"></i> Telegram</a>
+</div>
+
+<script>
+  let map = null;
+  let deliveryPoint = null;
+  const factoryCoords = [47.129696, 39.716890]; // Батайск
+
+  ymaps.ready(init);
+
+  function init() {
+    map = new ymaps.Map('map', {
+      center: factoryCoords,
+      zoom: 11,
+      controls: ['zoomControl']
+    });
+
+    // Загрузка кастомной иконки завода
+    const factoryIcon = new ymaps.Placemark(factoryCoords, {
+      balloonContent: 'Завод "Монолит Дон", Батайск'
+    }, {
+      iconLayout: 'default#image',
+      iconImageHref: 'https://github.com/beton61/monolit/blob/main/bg-location-map.png', // ← замените на вашу реальную картинку: 'img/factory.png'
+      iconImageSize: [32, 32],
+      iconImageOffset: [-16, -16]
+    });
+    map.geoObjects.add(factoryIcon);
+
+    map.events.add('click', function(e) {
+      const coords = e.get('coords');
+      ymaps.geocode(coords).then(function(result) {
+        const firstGeoObject = result.geoObjects.get(0);
+        const address = firstGeoObject ? firstGeoObject.getAddressLine() : 'Адрес не определён';
+        setDeliveryPoint(coords, address);
+      });
+    });
+  }
+
+  function findAddress() {
+    const userInput = document.getElementById('addressInput').value.trim();
+    if (!userInput) {
+      alert('Введите адрес!');
+      return;
+    }
+
+    let query = userInput;
+    const lowerInput = userInput.toLowerCase();
+    const cities = ['ростов', 'батайск', 'новошахтинск'];
+    const hasCity = cities.some(city => lowerInput.includes(city));
+
+    if (!hasCity) {
+      query = `${userInput}, Батайск`;
+    }
+
+    ymaps.geocode(query).then(function(result) {
+      const firstGeoObject = result.geoObjects.get(0);
+      if (!firstGeoObject) {
+        alert('Адрес не найден.');
+        return;
+      }
+
+      const coords = firstGeoObject.geometry.getCoordinates();
+      setDeliveryPoint(coords, query);
+    }).catch(() => {
+      alert('Ошибка поиска.');
+    });
+  }
+
+  function findMyLocation() {
+    if (!navigator.geolocation) {
+      alert('Геолокация не поддерживается.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = [position.coords.latitude, position.coords.longitude];
+        ymaps.geocode(coords).then(function(result) {
+          const firstGeoObject = result.geoObjects.get(0);
+          const address = firstGeoObject ? firstGeoObject.getAddressLine() : 'Адрес не определён';
+          setDeliveryPoint(coords, address);
+        });
+      },
+      (error) => {
+        alert('Не удалось определить местоположение.');
+      }
+    );
+  }
+
+  function setDeliveryPoint(coords, address) {
+    if (deliveryPoint) {
+      map.geoObjects.remove(deliveryPoint);
+    }
+
+    deliveryPoint = new ymaps.Placemark(coords, {
+      balloonContent: address
+    });
+    map.geoObjects.add(deliveryPoint);
+
+    map.setCenter(coords, 15);
+    document.getElementById('addressInput').value = address;
+    document.getElementById('deliveryAddress').value = address;
+  }
+
+  function getDistanceBetweenPoints(p1, p2) {
+    const R = 6371;
+    const dLat = (p2[0] - p1[0]) * Math.PI / 180;
+    const dLon = (p2[1] - p1[1]) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(p1[0] * Math.PI / 180) * Math.cos(p2[0] * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  function calculate() {
+    const markVal = parseFloat(document.getElementById('mark').value);
+    const volume = parseFloat(document.getElementById('volume').value);
+
+    if (!isNaN(markVal) && !isNaN(volume) && deliveryPoint) {
+      const deliveryCoords = deliveryPoint.geometry._coordinates;
+      const distanceKm = getDistanceBetweenPoints(factoryCoords, deliveryCoords);
+      const adjustedDistance = distanceKm + 4.5;
+
+      let baseCost = markVal * volume;
+      let deliveryCost = 0;
+
+      if (volume <= 5) {
+        deliveryCost = adjustedDistance <= 5
+          ? Math.ceil(3000)
+          : Math.ceil(3000 + 150 * (adjustedDistance - 5));
+      } else {
+        const baseDelivery = 600 * volume;
+        deliveryCost = adjustedDistance <= 5
+          ? Math.ceil(baseDelivery)
+          : Math.ceil(baseDelivery + 190 * (adjustedDistance - 5));
+      }
+
+      const total = baseCost + deliveryCost;
+
+      document.getElementById('costBase').textContent = baseCost.toFixed(2) + ' ₽';
+      document.getElementById('costDelivery').textContent = deliveryCost + ' ₽';
+      document.getElementById('costTotal').textContent = total.toFixed(2) + ' ₽';
+      document.getElementById('costDetails').style.display = 'block';
+
+      const showWarning = distanceKm > 10;
+      document.getElementById('deliveryWarning').style.display = showWarning ? 'block' : 'none';
+
+      showOrderForm();
+    } else {
+      alert('Введите объём и укажите точку.');
+      document.getElementById('costDetails').style.display = 'none';
+      document.getElementById('orderForm').style.display = 'none';
+    }
+  }
+
+  function showOrderForm() {
+    const form = document.getElementById('orderForm');
+    form.style.display = 'block';
+
+    if (deliveryPoint && !document.getElementById('deliveryAddress').value) {
+      const addr = deliveryPoint.properties.get('balloonContent');
+      if (addr && !addr.includes('Определение') && !addr.includes('Ошибка')) {
+        document.getElementById('deliveryAddress').value = addr;
+      }
+    }
+
+    form.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const phoneInput = document.getElementById('clientPhone');
+    IMask(phoneInput, {
+      mask: '+{7} (000) 000-00-00'
+    });
+  });
+
+  function submitOrder(method) {
+    const name = document.getElementById('clientName').value.trim();
+    const phone = document.getElementById('clientPhone').value.trim();
+    const address = document.getElementById('deliveryAddress').value.trim();
+    const comment = document.getElementById('comment').value.trim();
+    const volume = document.getElementById('volume').value;
+    const mark = document.getElementById('mark').options[document.getElementById('mark').selectedIndex].text;
+    const baseCost = document.getElementById('costBase').textContent;
+    const deliveryCost = document.getElementById('costDelivery').textContent;
+    const totalCost = document.getElementById('costTotal').textContent;
+
+    if (!name || !phone) {
+      alert('Заполните имя и телефон!');
+      return;
+    }
+
+    let message = `📦 Заказ бетона\n\n`
+      + `🧱 Марка: ${mark}\n`
+      + `㎥ Объем: ${volume} м³\n`
+      + `👤 Имя: ${name}\n`
+      + `📞 Телефон: ${phone}\n`
+      + `📍 Адрес: ${address || 'не указан'}\n`
+      + (comment ? `💬 Коммент: ${comment}\n` : '')
+      + `\n💰 Стоимость:\n`
+      + `Бетон: ${baseCost}\n`
+      + `Доставка: ${deliveryCost}\n`
+      + `Итого: ${totalCost}\n\n`;
+
+    const warningVisible = document.getElementById('deliveryWarning').style.display === 'block';
+    if (warningVisible) {
+      message += `⚠️ Внимание! Стоимость доставки за пределами г. Батайск может отличаться. Уточняйте у оператора.\n\n`;
+    }
+
+    message += `Спасибо!`;
+
+    const encodedMessage = encodeURIComponent(message);
+    let url = '';
+
+    if (method === 'whatsapp') {
+      url = `https://wa.me/79110911311?text=${encodedMessage}`;
+    } else if (method === 'telegram') {
+      url = `https://t.me/Olegzov13?text=${encodedMessage}`;
+    }
+
+    window.open(url, '_blank');
+  }
+
+  function orderFBS(name, size, price) {
+    const msg = `Здравствуйте! Хочу заказать:\n${name} (${size}) — ${price} ₽\n\nУточните, пожалуйста, наличие, доставку и оплату.`;
+    window.open(`https://wa.me/79110911311?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  function orderSphere(type, price) {
+    const msg = `Здравствуйте! Интересует:\n${type} — ${price} ₽\n\nПожалуйста, уточните наличие, доставку и условия.`;
+    window.open(`https://wa.me/79110911311?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+</script>
+</body>
+</html>
