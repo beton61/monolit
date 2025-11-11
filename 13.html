@@ -50,14 +50,16 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-     .product-img {
-    width: 100%;
-    height: 200px;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: #f9f9f9;
-  }
+.product-img {
+  width: 100%;
+  height: 200px;
+  background-size: cover;          /* Заполняет весь блок */
+  background-position: center;     /* Держит центр изображения */
+  background-repeat: no-repeat;
+  background-color: #f8f8f8;       /* Резервный фон */
+  border-bottom: 1px solid #e0e0e0;
+  overflow: hidden;
+}
 
   .product-card {
     background: white;
@@ -876,6 +878,7 @@
 
 </body>
 </html>
+
 
 
 
